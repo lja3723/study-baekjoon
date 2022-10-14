@@ -1,4 +1,4 @@
-ï»¿/*  problem No. 2630, ìƒ‰ì¢…ì´ ë§Œë“¤ê¸°
+/*  problem No. 2630, »öÁ¾ÀÌ ¸¸µé±â
     code style: all code in main, using STL */
 #include <iostream>
 #include <vector>
