@@ -1,56 +1,33 @@
-﻿/*  problem No. 2630, 색종이 만들기
-    code style: all code in main, using STL */
+﻿//problem No. 9184, 신나는 함수 실행
 #include <iostream>
-#include <vector>
 using namespace std;
 
-int getColor(vector<vector<int>>& p, int len, int x, int y)
-{
-    for (int dy = 0; dy < len; dy++) {
-        for (int dx = 0; dx < len; dx++) {
-            if (p[y][x] != p[y + dy][x + dx]) {
-                return -1;
-            }
-        }
-    }
-    return p[y][x];
-}
-
-void countColor(int& w, int& b, vector<vector<int>>& p, int len, int x, int y)
-{
-    switch (getColor(p, len, x, y)) {
-    case 0:
-        w++;
-        break;
-    case 1:
-        b++;
-        break;
-    case -1:
-        len /= 2;
-        countColor(w, b, p, len, x, y);
-        countColor(w, b, p, len, x + len, y);
-        countColor(w, b, p, len, x, y + len);
-        countColor(w, b, p, len, x + len, y + len);
-        break;
-    }
+int w(int a, int b, int c) {
+    static int m[21][21][21];
+    if (a <= 0 || b <= 0 || c <= 0)
+        return 1;
+    if (a > 20 || b > 20 || c > 20)
+        return w(20, 20, 20);
+    if (m[a][b][c] == 0) {
+        if (a < b && b < c)
+            m[a][b][c] = w(a, b, c - 1) + w(a, b - 1, c - 1) - w(a, b - 1, c);
+        else 
+            m[a][b][c] = w(a - 1, b, c) + w(a - 1, b - 1, c) + w(a - 1, b, c - 1) - w(a - 1, b - 1, c - 1);
+    }    
+    return m[a][b][c];
 }
 
 int main()
 {
-    //input
-    int N; cin >> N;
-    vector<vector<int>> p(N);
-    for (int i = 0; i < N; i++) {
-        p[i].resize(N);
-        for (int j = 0; j < N; j++) {
-            cin >> p[i][j];
-        }
+    while (1) {
+        //input
+        int a, b, c;
+        cin >> a >> b >> c;
+        if (a == -1 && b == -1 &&  c == -1) break;
+
+        //process
+        //output
+        cout << "w(" << a << ", " << b << ", " << c << ") = " << w(a, b, c) << endl;
     }
 
-    //process
-    int w = 0, b = 0;
-    countColor(w, b, p, N, 0, 0);
-
-    //output
-    cout << w << endl << b;
 }

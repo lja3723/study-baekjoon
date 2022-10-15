@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="임시 소스저장">
+      <UniqueIdentifier>{26f58e14-7ea8-4445-a3f5-3ed8012582b7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="baekjoon.cpp">
@@ -20,6 +23,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <Text Include="1005.txt">
+      <Filter>임시 소스저장</Filter>
+    </Text>
     <Text Include="temp.txt" />
   </ItemGroup>
 </Project>

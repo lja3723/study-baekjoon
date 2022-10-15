@@ -1,0 +1,31 @@
+/*  problem No. 1005, ACM Craft
+    code style: all code in main, using STL */
+#include <iostream>
+#include <vector>
+#include <map>
+using namespace std;
+
+int main()
+{
+    int T; cin >> T;
+    while (T--) {
+        //input
+        int N, K; cin >> N >> K;
+        vector<int> D(N); for (int i = 0; i < N; i++) { cin >> D[i]; }
+        multimap<int, int> M;
+        for (int i = 0; i < K; i++) {
+            int a, b; cin >> a >> b;
+            M.insert(pair<int, int>(a, b));
+        }
+        int W; cin >> W;
+        cout << endl;
+
+        //process
+
+        //output
+        for (auto i = M.begin(); i != M.end(); i++) {
+            cout << "M[" << i->first << "] = " << i->second << endl;
+        }
+        cout << endl;
+    }
+}
