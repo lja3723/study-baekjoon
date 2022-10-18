@@ -1,33 +1,40 @@
-﻿//problem No. 15652, N과 M (4)
+﻿//problem No. 9663, N-Queen
 #include <iostream>
 #include <vector>
+#include <cmath>
 using namespace std;
 
-void bt(int N, int M, int d) {
-	static int a[8];
-	static int idx;
+void NQueen(int N, int& cnt, int depth) {
+	static int q[15];
 
-	if (d == M) {
-		for (int i = 0; i < d; i++) {
-			cout << a[i] << " ";
+	if (depth < N) {
+		for (int n = 0; n < N; n++) {
+			bool able = [depth, n]() {
+				for (int j = 0; j < depth; j++) {
+					if (n == q[j] || abs(n - q[j]) == depth - j) {
+						return false;
+					}
+				}
+				return true;
+			}();
+			
+			if (able) {
+				q[depth] = n;
+				NQueen(N, cnt, depth + 1);
+			}
 		}
-		cout << "\n";
-		return;
+	}
+	else {
+		cnt++;
 	}
 
-	for (int n = 1; n <= N; n++) {
-		if (idx != 0 && a[idx - 1] > n)
-			continue;
 
-		a[idx++] = n;
-		bt(N, M, d + 1);
-		idx--;
-	}
 }
 
 int main()
 {
-	int N, M;
-	cin >> N >> M;
-	bt(N, M, 0);
+	int N, cnt = 0;
+	cin >> N;
+	NQueen(N, cnt, 0);
+	cout << cnt;
 }
