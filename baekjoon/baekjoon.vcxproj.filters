@@ -27,5 +27,8 @@
       <Filter>임시 소스저장</Filter>
     </Text>
     <Text Include="temp.txt" />
+    <Text Include="2579.txt">
+      <Filter>임시 소스저장</Filter>
+    </Text>
   </ItemGroup>
 </Project>

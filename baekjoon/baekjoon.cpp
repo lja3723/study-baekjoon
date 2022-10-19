@@ -1,40 +1,39 @@
-﻿//problem No. 9663, N-Queen
+﻿//problem No. 1744, 수 묶기
 #include <iostream>
 #include <vector>
-#include <cmath>
+#include <algorithm>
 using namespace std;
-
-void NQueen(int N, int& cnt, int depth) {
-	static int q[15];
-
-	if (depth < N) {
-		for (int n = 0; n < N; n++) {
-			bool able = [depth, n]() {
-				for (int j = 0; j < depth; j++) {
-					if (n == q[j] || abs(n - q[j]) == depth - j) {
-						return false;
-					}
-				}
-				return true;
-			}();
-
-			if (able) {
-				q[depth] = n;
-				NQueen(N, cnt, depth + 1);
-			}
-		}
-	}
-	else {
-		cnt++;
-	}
-
-
-}
 
 int main()
 {
-	int N, cnt = 0;
-	cin >> N;
-	NQueen(N, cnt, 0);
-	cout << cnt;
+	int N; cin >> N;
+	vector<int> p, n;
+	int cnt[2] = { 0 };
+
+	for (int i = 0; i < N; i++) {
+		int k;
+		cin >> k;
+		if (k > 1)
+			p.push_back(k);
+		else if (k < 0)
+			n.push_back(k);
+		else
+			cnt[k]++;
+	}
+
+	sort(p.begin(), p.end(), greater<int>());
+	sort(n.begin(), n.end());
+
+	int sum = 0, i;
+	for (i = 0; i + 1 < p.size(); i += 2)
+		sum += p[i] * p[i + 1];
+	if (i == p.size() - 1)
+		sum += p[i];	
+	for (i = 0; i + 1 < n.size(); i += 2)
+		sum += n[i] * n[i + 1];
+	if (i == n.size() - 1 && cnt[0] == 0)
+		sum += n[i];
+	sum += cnt[1];
+
+	cout << sum;
 }
