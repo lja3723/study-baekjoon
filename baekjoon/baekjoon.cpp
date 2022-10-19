@@ -17,7 +17,7 @@ void NQueen(int N, int& cnt, int depth) {
 				}
 				return true;
 			}();
-			
+
 			if (able) {
 				q[depth] = n;
 				NQueen(N, cnt, depth + 1);
