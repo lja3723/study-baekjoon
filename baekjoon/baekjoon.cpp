@@ -4,5 +4,13 @@ using namespace std;
 
 int main()
 {
-	.....
+	/**************\
+	
+	
+	
+	**
+	s
+	d
+	fs
+	d/
 }
