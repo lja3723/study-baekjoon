@@ -4,13 +4,9 @@ using namespace std;
 
 int main()
 {
-	/**************\
+	/***sfsdf
 	
+	fsdfsadfasd*
 	
-	
-	**
-	s
-	d
-	fs
-	d/
+	/
 }
