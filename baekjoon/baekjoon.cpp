@@ -2,6 +2,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#define MAX 100001
 using namespace std;
 
 int N;
