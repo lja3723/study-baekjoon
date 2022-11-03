@@ -1,31 +1,42 @@
-﻿//problem No. 2294, 동전 2
+﻿//problem No. 11403, 경로 찾기
 #include <iostream>
-#include <vector>
-#include <algorithm>
 using namespace std;
 
-int n, k;
-int value[101]; //value[i] == i번째 동전 가치
-int dp[10001]; //dp[k] == 동전들의 합이 k의 가치가 있을 때, 동전 수의 최소값 (불가능시 -1)
+int N;
+int dat[100][100];
+int visited[100];
+int ret[100][100];	
+
+void dfs(int V) {
+	for (int u = 0; u < N; u++) {
+		if (dat[V][u] == 1 && !visited[u]) {
+			visited[u] = 1;
+			dfs(u);
+		}
+	}
+}
 
 int main()
 {
-	ios_base::sync_with_stdio(0); cout.tie(0); cin.tie(0);
+	//입력
+	cin >> N;
+	for (int i = 0; i < N; i++)
+		for (int j = 0; j < N; j++)
+			cin >> dat[i][j];
 
-	cin >> n >> k;
-	for (int i = 1; i <= n; i++)
-		cin >> value[i];
-	
-	fill(dp, dp + 10001, 10000000);
-	dp[0] = 0; //0의 가치 == 0개의 동전
+	for (int v = 0; v < N; v++) {
+		dfs(v);
 
-	for (int ik = 1; ik <= k; ik++) {
-		for (int iv = 1; iv <= n; iv++) {
-			if (ik - value[iv] >= 0) {
-				dp[ik] = min(dp[ik], dp[ik - value[iv]] + 1);
-			}
+		for (int u = 0; u < N; u++) {
+			ret[v][u] = visited[u]; //결과값 ret에 저장
+			visited[u] = 0;	//visited 초기화
 		}
 	}
 
-	cout << (dp[k] == 10000000 ? -1 : dp[k]);
+	//출력
+	for (int i = 0; i < N; i++) {
+		for (int j = 0; j < N; j++)
+			cout << ret[i][j] << " ";
+		cout << "\n";
+	}
 }
