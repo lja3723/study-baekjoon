@@ -1,31 +1,49 @@
-﻿//problem No. 2294, 동전 2
+﻿//problem No. 1012, 유기농 배추
 #include <iostream>
 #include <vector>
 #include <algorithm>
+
+#define MAX 2500
 using namespace std;
 
-int n, k;
-int value[101]; //value[i] == i번째 동전 가치
-int dp[10001]; //dp[k] == 동전들의 합이 k의 가치가 있을 때, 동전 수의 최소값 (불가능시 -1)
+int M, N, K;
+bool dat[50][50];
+bool graph[MAX][MAX];
+
+void dfs(int m, int n) {
+	dat[m][n] = false;
+
+	if (0 < m		&& dat[m - 1][n] == true) dfs(m - 1, n);
+	if (m < M - 1	&& dat[m + 1][n] == true) dfs(m + 1, n);
+	if (0 < n		&& dat[m][n - 1] == true) dfs(m, n - 1);
+	if (n < N - 1	&& dat[m][n + 1] == true) dfs(m, n + 1);
+}
 
 int main()
 {
-	ios_base::sync_with_stdio(0); cout.tie(0); cin.tie(0);
+	int T;
+	cin >> T;
 
-	cin >> n >> k;
-	for (int i = 1; i <= n; i++)
-		cin >> value[i];
-	
-	fill(dp, dp + 10001, 10000000);
-	dp[0] = 0; //0의 가치 == 0개의 동전
+	while (T--) {
+		int cnt = 0;
+		for (int i = 0; i < 50; i++)
+			fill(dat[i], dat[i] + 50, false);
 
-	for (int ik = 1; ik <= k; ik++) {
-		for (int iv = 1; iv <= n; iv++) {
-			if (ik - value[iv] >= 0) {
-				dp[ik] = min(dp[ik], dp[ik - value[iv]] + 1);
-			}
+		cin >> M >> N >> K;
+		for (int i = 0; i < K; i++) {
+			int m, n;
+			cin >> m >> n;
+			dat[m][n] = true;
 		}
-	}
 
-	cout << (dp[k] == 10000000 ? -1 : dp[k]);
+		for (int m = 0; m < M; m++)
+			for (int n = 0; n < N; n++) {
+				if (dat[m][n] == true) {
+					dfs(m, n);
+					cnt++;
+				}
+			}
+
+		cout << cnt << "\n";
+	}
 }
