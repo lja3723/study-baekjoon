@@ -1,37 +1,53 @@
-﻿//problem No. 1654, 랜선 자르기
+﻿//problem No. 15686, 치킨 배달
 #include <iostream>
 #include <vector>
-#include <algorithm>
 using namespace std;
+typedef pair<int, int> pii;
 
-vector<int> dat;
+int N, M, ans = 1e6;
+vector<pii> vh, vc; //vh: 집 좌표 //vc: 치킨집 좌표
+vector<int> combi; 
+
+int getDistSum() {
+	int ret = 0;
+	for (pii h : vh) {
+		int d = 100;
+		for (int i : combi) {
+			int dist = abs(h.first - vc[i].first) + abs(h.second - vc[i].second);
+			d = min(d, dist);
+		}				
+		ret += d;
+	}
+
+	return ret;
+}
+
+void bt() {
+	int szv = combi.size();
+	if (szv == M) {
+		ans = min(ans, getDistSum());
+		return;
+	}
+
+	for (int i = 0; i < vc.size(); i++) {
+		if (szv == 0 || combi[szv - 1] < i) {
+			combi.push_back(i);
+			bt();
+			combi.pop_back();
+		}
+	}
+}
 
 int main()
 {
-	int K, N, n;
-	cin >> K >> N;
-
-	for (int i = 0; i < K; i++)
-	{
-		cin >> n;
-		dat.push_back(n);
-	}
-
-	long long f = 1, l = 2147483647, m, ans = 0;
-	while (f <= l) {
-		m = (f + l) / 2;
-		n = 0;
-		for (auto i : dat) {
-			n += i / m;
-		}
-
-		if (n < N)
-			l = m - 1;
-		else {
-			ans = (ans > m ? ans : m);
-			f = m + 1;
-		}
-	}
+	cin >> N >> M;
+	int i, j, d;
+	for (i = 0; i < N; i++) for (j = 0; j < N; j++) {
+		cin >> d;
+		if (d == 1) vh.push_back({ i, j });
+		if (d == 2) vc.push_back({ i, j });
+	}	
+	bt();
 
 	cout << ans;
 }
