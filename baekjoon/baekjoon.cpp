@@ -2,6 +2,9 @@
 #include <iostream>
 using namespace std;
 
+int N, M;
+vector<int> trees;
+
 int main()
 {
 	int L;
