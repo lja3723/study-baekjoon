@@ -1,40 +1,36 @@
-﻿//problem No. 18111, 마인크래프트
+﻿//problem No. 1074, Z
 #include <iostream>
+#include <cmath>
 using namespace std;
 
-int N, M, B;
-int map[500][500];
+int N, R, C;
+int ans = 0;
 
-int main()
-{
-	cin >> N >> M >> B;
-	for (int i = 0; i < N; i++)
-		for (int j = 0; j < M; j++)
-			cin >> map[i][j];
+void func(int n, int r, int c) {
+	if (n == 1) {
+		cout << ans;
+		return;
+	}
 
-	int T = 128e6, H = 0;
-	for (int h = 0; h <= 256; h++) {
-		int del = 0, add = 0;
+	int nn = n / 2;
+	for (int i = 0; i < 2; i++) {
+		for (int j = 0; j < 2; j++) {
+			int nr = r + i * nn;
+			int nc = c + j * nn;
 
-		for (int i = 0; i < N; i++) {
-			for (int j = 0; j < M; j++) {
-				int dh = map[i][j] - h;
-				if (dh > 0) 
-					del += dh; //블럭을 캔다
-				else 
-					add -= dh; //블럭을 쌓는다				
-			}
-		}
-
-		if (B + del >= add) { //평지화가 가능함
-			int t = 2 * del + add;
-
-			if (t <= T) {
-				T = t;
-				H = h;
+			if (nr <= R && R < nr + nn) {
+				if (nc <= C && C < nc + nn) {
+					ans += (2 * i + j) * nn * nn;
+					func(nn, nr, nc);
+					return;
+				}
 			}
 		}
 	}
+}
 
-	cout << T << " " << H;
+int main()
+{
+	cin >> N >> R >> C;
+	func(pow(2, N), 0, 0);
 }
