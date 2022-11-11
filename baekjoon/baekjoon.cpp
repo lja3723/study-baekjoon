@@ -1,40 +1,42 @@
-﻿//problem No. 18111, 마인크래프트
+﻿//problem No. 1759, 암호 만들기
 #include <iostream>
+#include <vector>
+#include <algorithm>
 using namespace std;
 
-int N, M, B;
-int map[500][500];
+int L, C;
+vector<char> c;
+vector<char> ans;
+
+void bt() {
+	if (ans.size() == L) {
+		int cnt = 0;
+		for (char a : ans) for (char c : "aeiou")
+			if (a == c) cnt++;
+
+		if (cnt > 0 && (L - cnt) > 1) {
+			for (char a : ans) cout << a;
+			cout << "\n";
+		}
+
+		return;
+	}
+
+	for (int i = 0; i < C; i++)
+		if (ans.empty() || ans[ans.size() - 1] < c[i]) {
+			ans.push_back(c[i]);
+			bt();
+			ans.pop_back();
+		}
+}
 
 int main()
 {
-	cin >> N >> M >> B;
-	for (int i = 0; i < N; i++)
-		for (int j = 0; j < M; j++)
-			cin >> map[i][j];
+	cin >> L >> C;
+	c.resize(C);
+	for (int i = 0; i < C; i++)
+		cin >> c[i];
+	sort(c.begin(), c.end());
 
-	int T = 128e6, H = 0;
-	for (int h = 0; h <= 256; h++) {
-		int del = 0, add = 0;
-
-		for (int i = 0; i < N; i++) {
-			for (int j = 0; j < M; j++) {
-				int dh = map[i][j] - h;
-				if (dh > 0) 
-					del += dh; //블럭을 캔다
-				else 
-					add -= dh; //블럭을 쌓는다				
-			}
-		}
-
-		if (B + del >= add) { //평지화가 가능함
-			int t = 2 * del + add;
-
-			if (t <= T) {
-				T = t;
-				H = h;
-			}
-		}
-	}
-
-	cout << T << " " << H;
+	bt();
 }
