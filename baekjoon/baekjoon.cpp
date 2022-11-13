@@ -1,7 +1,5 @@
 ﻿//problem No. 1461, 도서관
 #include <iostream>
-#include <vector>
-#include <algorithm>
 using namespace std;
 
 int N, M, i, j;
