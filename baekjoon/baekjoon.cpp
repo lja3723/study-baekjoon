@@ -1,44 +1,57 @@
-﻿//problem No. 2606, 바이러스
+﻿//problem No. 2178, 미로 탐색
 #include <iostream>
 #include <vector>
 #include <queue>
 #include <algorithm>
 using namespace std;
 
-int N, M, ans;
-vector<vector<int>> graph(101);
-vector<int> visited(101);
+struct NM { int n, m; };
+
+int N, M, i, j, ans;
+int map[102][102];
 
 void bfs() {
-	queue<int> q;	
-	q.push(1);
-	visited[1]++;
+	queue<NM> q;
+	queue<int> depth;
+	q.push({ 1, 1 });
+	depth.push(1);
+	map[1][1]--;
 
 	while (!q.empty()) {
-		int v = q.front();
+		NM cur = q.front();
+		int cd = depth.front();
 		q.pop();
-		ans++;
+		depth.pop();
 
-		for (int nv : graph[v])
-			if (!visited[nv]) {
-				visited[nv]++;
-				q.push(nv);
+		NM d[4] = { {1, 0}, {-1, 0}, {0, 1}, {0, -1} };
+		for (i = 0; i < 4; i++) {
+			int cn = cur.n + d[i].n;
+			int cm = cur.m + d[i].m;
+			if (!map[cn][cm]) continue;
+
+			if (cn == N && cm == M) {
+				ans = cd + 1;
+				return;
 			}
+
+			map[cn][cm]--;
+			q.push({ cn, cm });
+			depth.push(cd + 1);
+		}
 	}
 }
 
 int main()
 {
 	cin >> N >> M;
-	
-	for (int i = 0; i < M; i++) {
-		int v, u;
-		cin >> v >> u;
-		graph[v].push_back(u);
-		graph[u].push_back(v);
+	for (i = 1; i <= N; i++) {
+		string line;
+		cin >> line;
+		for (j = 1; j <= M; j++)
+			map[i][j] = int(line[j - 1] - '0');
 	}
 
 	bfs();
 
-	cout << --ans;
+	cout << ans;
 }
