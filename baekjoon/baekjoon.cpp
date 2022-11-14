@@ -1,33 +1,23 @@
-﻿//problem No. 1260, DFS와 BFS
+﻿//problem No. 2606, 바이러스
 #include <iostream>
 #include <vector>
 #include <queue>
 #include <algorithm>
 using namespace std;
 
-int N, M, V;
-vector<vector<int>> graph(1001);
-vector<int> visited(1001);
+int N, M, ans;
+vector<vector<int>> graph(101);
+vector<int> visited(101);
 
-void dfs(int V) {
-	cout << V << " ";
-	
-	for (int v : graph[V])
-		if (!visited[v]) {
-			visited[v]++;
-			dfs(v);
-		}
-}
-
-void bfs(int V) {
+void bfs() {
 	queue<int> q;	
-	q.push(V);
+	q.push(1);
+	visited[1]++;
 
 	while (!q.empty()) {
 		int v = q.front();
 		q.pop();
-
-		cout << v << " ";
+		ans++;
 
 		for (int nv : graph[v])
 			if (!visited[nv]) {
@@ -39,7 +29,7 @@ void bfs(int V) {
 
 int main()
 {
-	cin >> N >> M >> V;
+	cin >> N >> M;
 	
 	for (int i = 0; i < M; i++) {
 		int v, u;
@@ -48,14 +38,7 @@ int main()
 		graph[u].push_back(v);
 	}
 
-	for (int i = 1; i <= N; i++)
-		sort(graph[i].begin(), graph[i].end());
+	bfs();
 
-	visited[V]++;
-	dfs(V);
-	cout << "\n";
-
-	fill(visited.begin(), visited.end(), 0);
-	visited[V]++;
-	bfs(V);
+	cout << --ans;
 }
