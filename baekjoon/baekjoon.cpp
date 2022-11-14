@@ -1,40 +1,61 @@
-﻿//problem No. 1461, 도서관
+﻿//problem No. 1260, DFS와 BFS
 #include <iostream>
+#include <vector>
+#include <queue>
+#include <algorithm>
 using namespace std;
 
-int N, M, i, j;
-vector<int> books[2]; //books[0]: 음수(절대값), books[1]: 양수
+int N, M, V;
+vector<vector<int>> graph(1001);
+vector<int> visited(1001);
+
+void dfs(int V) {
+	cout << V << " ";
+	
+	for (int v : graph[V])
+		if (!visited[v]) {
+			visited[v]++;
+			dfs(v);
+		}
+}
+
+void bfs(int V) {
+	queue<int> q;	
+	q.push(V);
+
+	while (!q.empty()) {
+		int v = q.front();
+		q.pop();
+
+		cout << v << " ";
+
+		for (int nv : graph[v])
+			if (!visited[nv]) {
+				visited[nv]++;
+				q.push(nv);
+			}
+	}
+}
 
 int main()
 {
-	cin >> N >> M;
-	for (i = 0; i < N; i++) {
-		cin >> j;
-		books[j > 0].push_back(j > 0 ? j : -j);
-		//j > 0의 판정(true->1, false->0)에 따라 books가 선택됨
-		//j가 음수인 경우 -j(절대값) 저장
+	cin >> N >> M >> V;
+	
+	for (int i = 0; i < M; i++) {
+		int v, u;
+		cin >> v >> u;
+		graph[v].push_back(u);
+		graph[u].push_back(v);
 	}
 
-	for (i = 0; i < 2; i++) {
-		//각 저장소에 0(추후 books[i].back() 했을 경우 empty()인 상태를 방지)을 저장 후 정렬
-		books[i].push_back(0);
-		sort(books[i].begin(), books[i].end());
-	}
+	for (int i = 1; i <= N; i++)
+		sort(graph[i].begin(), graph[i].end());
 
-	int ans = 0;
-	int bb[2]; //BooksBack, bb[0]과 [1]은 각각 음수, 양수들 중 절대값이 가장 큰 수를 저장함
-	for (i = 0; i < 2; i++) {
-		bb[i] = books[i].back();
-		int len = books[i].size();
+	visited[V]++;
+	dfs(V);
+	cout << "\n";
 
-		//books[i]의 절대값이 가장 큰 원소부터 M씩 앞으로 차례대로 방문
-		//ex: 0 4 7 8 12 15 19 34 36 39 , M == 3이면
-		//책을 1~M권 챙긴 후 39, 19, 8을 방문 후 돌아오는 것이 최적해임
-		for (j = len - 1; j > 0; j -= M)
-			ans += 2 * books[i][j];
-	}
-
-	//마지막 for문에서, 마지막 책을 두고 다시 0으로 돌아왔으므로
-	//bb[0], [1]중 절대값이 더 큰 곳의 방문을 무효화 함
-	cout << ans - bb[bb[0] < bb[1]];
+	fill(visited.begin(), visited.end(), 0);
+	visited[V]++;
+	bfs(V);
 }
