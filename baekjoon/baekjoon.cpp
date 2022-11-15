@@ -1,44 +1,20 @@
-﻿//problem No. 1697, 숨바꼭질
+﻿//problem No. 9095, 1, 2, 3 더하기
 #include <iostream>
 #include <vector>
-#include <queue>
 using namespace std;
 
-struct PT { int p, t; }; //위치 & 시간
-int visited[100001];
-int n, k, ans;
-
-void bfs() {
-	if (n == k) return;
-
-	queue<PT> q;
-	q.push({ n, 0 });
-	visited[n]++;
-
-	while (true) {
-		PT now = q.front();
-		q.pop();
-
-		int i, nt = now.t + 1;
-		int np[3] = { now.p + 1, now.p - 1, 2 * now.p };
-		for (i = 0; i < 3; i++) {
-			if (!(0 <= np[i] && np[i] <= 100000) || visited[np[i]])
-				continue;
-
-			if (np[i] == k) {
-				ans = nt;
-				return;
-			}
-
-			q.push({ np[i], nt });
-			visited[np[i]]++;
-		}
-	}
-}
+int dp[11] = { 1 };
+int T, n;
 
 int main()
 {
-	cin >> n >> k;
-	bfs();
-	cout << ans;
+	for (int i = 1; i < 11; i++) for (int j = 1; j < 4; j++)
+		if (i - j >= 0)
+			dp[i] += dp[i - j];
+
+	cin >> T;
+	while (T--) {
+		cin >> n;
+		cout << dp[n] << "\n";
+	}
 }
