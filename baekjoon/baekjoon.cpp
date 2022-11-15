@@ -1,29 +1,26 @@
-﻿//problem No. 1149, RGB거리
+﻿//problem No. 1932, 정수 삼각형
 #include <iostream>
-#include <algorithm>
 using namespace std;
 
-int N, n, i;
-int rgb[3]; 
-int dpa[3], dpb[3];
+int dp[500][501];
+
 
 int main() {
+	int N;
 	cin >> N;
-	for (n = 0; n < N; n++) 
 
-	for (n = 0; n < N; n++) {
-		cin >> rgb[0] >> rgb[1] >> rgb[2];
-		if (n == 0)
-			for (i = 0; i < 3; i++) 
-				dpa[i] = rgb[i];
-		else {
-			dpb[0] = min(dpa[1], dpa[2]) + rgb[0];
-			dpb[1] = min(dpa[0], dpa[2]) + rgb[1];
-			dpb[2] = min(dpa[0], dpa[1]) + rgb[2];
-			for (i = 0; i < 3; i++)
-				dpa[i] = dpb[i];
+	for (int i = 0; i < N; i++)
+		for (int j = 1; j <= i + 1; j++) {
+			cin >> dp[i][j];
+			if (i > 0) 
+				dp[i][j] += max(dp[i - 1][j - 1], dp[i - 1][j]);			
 		}
-	}
+	
+	int ans = 0;
+	for (int i = 1; i <= N; i++)
+		ans = max(ans, dp[N - 1][i]);
 
-	cout << min({ dpb[0], dpb[1], dpb[2] });
+	ios::sync_with_stdio(0), cin.tie(0);
+
+	cout << ans;
 }
