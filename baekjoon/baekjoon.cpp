@@ -1,58 +1,32 @@
-﻿//problem No. 5430, AC
+﻿//problem No. 1655, 가운데를 말해요
 #include <iostream>
 #include <queue>
-#include <string>
-#include <sstream>
+#include <vector>
 using namespace std;
  
-int main() { 
-	int T; cin >> T;
-	while (T--) {
-		string p; cin >> p;
-		int n; cin >> n;
-		string sdat; cin >> sdat;
+int main() {
+	ios::sync_with_stdio(0); cin.tie(0);
+	int N; cin >> N;
+	priority_queue<int> pqL;
+	priority_queue<int, vector<int>, greater<int>> pqR;
 
-		sdat = sdat.substr(1, sdat.size() - 2);
-		stringstream ss(sdat);
-		string sd;
-		deque<int> dq;
-		while (getline(ss, sd, ','))
-			dq.push_back(stoi(sd));
+	while (N--) {
+		int d; cin >> d;
 
-		int isR = 0, isE = 0;
-		for (char c : p) {
-			if (c == 'D') {
-				if (dq.empty()) {
-					cout << "error\n";
-					isE = 1;
-					break;
-				}
-				else if (!isR)
-					dq.pop_front();
-				else
-					dq.pop_back();
-			}
-			else
-				isR = !isR;
+		if (pqL.empty() || d <= pqL.top())
+			pqL.push(d);
+		else
+			pqR.push(d);
+
+		if (pqL.size() >= pqR.size() + 2) {
+			pqR.push(pqL.top());
+			pqL.pop();
+		}
+		else if (pqL.size() + 1 <= pqR.size()) {
+			pqL.push(pqR.top());
+			pqR.pop();
 		}
 
-		if (!isE) {
-			cout << "[";
-			while (!dq.empty()) {
-				if (!isR) {
-					cout << dq.front();
-					dq.pop_front();
-				}
-				else {
-					cout << dq.back();
-					dq.pop_back();
-				}
-
-				if (!dq.empty())
-					cout << ',';
-			}
-
-			cout << "]\n";
-		}
+		cout << pqL.top() << "\n";
 	}
 }
