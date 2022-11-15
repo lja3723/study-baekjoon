@@ -1,20 +1,29 @@
-﻿//problem No. 9095, 1, 2, 3 더하기
+﻿//problem No. 1149, RGB거리
 #include <iostream>
-#include <vector>
+#include <algorithm>
 using namespace std;
 
-int dp[11] = { 1 };
-int T, n;
+int N, n, i;
+int rgb[3]; 
+int dpa[3], dpb[3];
 
-int main()
-{
-	for (int i = 1; i < 11; i++) for (int j = 1; j < 4; j++)
-		if (i - j >= 0)
-			dp[i] += dp[i - j];
+int main() {
+	cin >> N;
+	for (n = 0; n < N; n++) 
 
-	cin >> T;
-	while (T--) {
-		cin >> n;
-		cout << dp[n] << "\n";
+	for (n = 0; n < N; n++) {
+		cin >> rgb[0] >> rgb[1] >> rgb[2];
+		if (n == 0)
+			for (i = 0; i < 3; i++) 
+				dpa[i] = rgb[i];
+		else {
+			dpb[0] = min(dpa[1], dpa[2]) + rgb[0];
+			dpb[1] = min(dpa[0], dpa[2]) + rgb[1];
+			dpb[2] = min(dpa[0], dpa[1]) + rgb[2];
+			for (i = 0; i < 3; i++)
+				dpa[i] = dpb[i];
+		}
 	}
+
+	cout << min({ dpb[0], dpb[1], dpb[2] });
 }
