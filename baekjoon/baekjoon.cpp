@@ -1,29 +1,58 @@
-﻿//problem No. 10844, 쉬운 계단수
+﻿//problem No. 5430, AC
 #include <iostream>
+#include <queue>
+#include <string>
+#include <sstream>
 using namespace std;
+ 
+int main() { 
+	int T; cin >> T;
+	while (T--) {
+		string p; cin >> p;
+		int n; cin >> n;
+		string sdat; cin >> sdat;
 
-int dp[101][10];
+		sdat = sdat.substr(1, sdat.size() - 2);
+		stringstream ss(sdat);
+		string sd;
+		deque<int> dq;
+		while (getline(ss, sd, ','))
+			dq.push_back(stoi(sd));
 
-int main() {
-	int N;
-	cin >> N;
+		int isR = 0, isE = 0;
+		for (char c : p) {
+			if (c == 'D') {
+				if (dq.empty()) {
+					cout << "error\n";
+					isE = 1;
+					break;
+				}
+				else if (!isR)
+					dq.pop_front();
+				else
+					dq.pop_back();
+			}
+			else
+				isR = !isR;
+		}
 
-	for (int i = 1; i < 10; i++)
-		dp[1][i]++;
+		if (!isE) {
+			cout << "[";
+			while (!dq.empty()) {
+				if (!isR) {
+					cout << dq.front();
+					dq.pop_front();
+				}
+				else {
+					cout << dq.back();
+					dq.pop_back();
+				}
 
-	int p = 1e9;
-	for (int n = 2; n <= N; n++) {
-		dp[n][0] = dp[n - 1][1] % p;
+				if (!dq.empty())
+					cout << ',';
+			}
 
-		for (int j = 1; j <= 8; j++)
-			dp[n][j] = (dp[n - 1][j - 1] + dp[n - 1][j + 1]) % p;
-
-		dp[n][9] = dp[n - 1][8] % p;
+			cout << "]\n";
+		}
 	}
-
-	int ans = 0;
-	for (int i = 0; i < 10; i++)
-		ans = (ans + dp[N][i]) % p;
-
-	cout << ans;
 }
