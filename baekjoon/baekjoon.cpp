@@ -2,11 +2,11 @@
 #include <iostream>
 using namespace std;
 
-int N, i, j;
-string paint[100];
+int N, i, j, hMax;
+int map[100][100];
 int visited[100][100];
 
-void dfs(int i, int j, char color, int mode) {
+void dfs(int i, int j) {
 	if (visited[i][j]) return;
 	visited[i][j] = 1;
 
@@ -21,19 +21,7 @@ void dfs(int i, int j, char color, int mode) {
 		if (visited[ni][nj])
 			continue;
 
-		if (mode == 0) {
-			if (color != paint[ni][nj])
-				continue;
-		}
-
-		if (mode == 1) {
-			if (color == 'B' && paint[ni][nj] != 'B')
-				continue;
-			if (color != 'B' && paint[ni][nj] == 'B')
-				continue;				
-		}
-
-		dfs(ni, nj, color, mode);
+		dfs(ni, nj);
 	}
 }
 
@@ -41,22 +29,31 @@ int main() {
 	cin >> N;
 
 	for (i = 0; i < N; i++)
-		cin >> paint[i];
+		for (j = 0; j < N; j++) {
+			cin >> map[i][j];
+			hMax = max(hMax, map[i][j]);
+		}
 
-	int cnt, mode = -1;
-	while (++mode < 2) {
-		if (mode == 1)
-			for (i = 0; i < N; i++)
-				fill(visited[i], visited[i] + N, 0);
+	int ans = 0, h, cnt;
+	for (h = 0; h <= hMax; h++) {
+		for (i = 0; i < N; i++)
+			fill(visited[i], visited[i] + N, 0);
+
+		for (i = 0; i < N; i++)
+			for (j = 0; j < N; j++)
+				if (map[i][j] <= h)
+					visited[i][j] = 1;
 
 		cnt = 0;
 		for (i = 0; i < N; i++)
 			for (j = 0; j < N; j++)
 				if (!visited[i][j]) {
 					cnt++;
-					dfs(i, j, paint[i][j], mode);
+					dfs(i, j);
 				}
 
-		cout << cnt << " ";
+		ans = max(ans, cnt);
 	}
+
+	cout << ans;
 }
