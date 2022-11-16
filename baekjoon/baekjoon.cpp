@@ -1,33 +1,47 @@
-﻿//problem No. 1010, 다리 놓기
+﻿//problem No. 4963, 섬의 개수
 #include <iostream>
 using namespace std;
 
-int combi[30][30];
+int map[50][50];
+int h, w, i, j, cnt;
 
-int getCombi(int M, int N) {
-	if (combi[M][N] == 0) {
-		combi[M][M] = getCombi(M - 1, N - 1) + getCombi(M - 1, N);
+void dfs(int i, int j) {
+	if (map[i][j] == 0) return;
+	map[i][j] = 0;
+
+	int di[8] = { -1, -1, -1, 0, 1, 1, 1, 0 };
+	int dj[8] = { -1, 0, 1, 1, 1, 0, -1, -1 };
+	for (int d = 0; d < 8; d++) {
+		int ni = i + di[d];
+		int nj = j + dj[d];
+		if (!(0 <= ni && ni < h) || !(0 <= nj && nj < w))
+			continue;
+		if (map[ni][nj] == 0)
+			continue;
+
+		dfs(ni, nj);
 	}
-
-	return combi[M][N];
 }
 
 int main() {
 	ios::sync_with_stdio(0), cin.tie(0);
-	int T, N, M;
+	while (1) {
+		cin >> w >> h;
+		if (w == 0 && h == 0) break;
 
-	for (M = 1; M < 30; M++) {
-		for (N = 0; N <= M; N++) {
-			if (0 == N || M == N)
-				combi[M][N] = 1;
-			else
-				combi[M][N] = combi[M - 1][N - 1] + combi[M - 1][N];
-		}
-	}
+		for (i = 0; i < h; i++)
+			for (j = 0; j < w; j++)
+				cin >> map[i][j];
 
-	cin >> T;
-	while (T--) {
-		cin >> N >> M;
-		cout << getCombi(M, N) << "\n";
+		cnt = 0;
+		for (i = 0; i < h; i++)
+			for (j = 0; j < w; j++) {
+				if (map[i][j] == 1) {
+					cnt++;
+					dfs(i, j);
+				}
+			}
+
+		cout << cnt << "\n";
 	}
 }
