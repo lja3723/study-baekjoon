@@ -1,55 +1,55 @@
-﻿//problem No. 2583, 영역 구하기
+﻿//problem No. 7562, 나이트의 이동
 #include <iostream>
 #include <vector>
-#include <algorithm>
+#include <queue>
 using namespace std;
 
-int M, N, K, i, j, cnt;
-int map[100][100];
-vector<int> area;
+struct IJ { int i, j, mv; };
 
-void dfs(int i, int j) {
-	if (map[i][j]) return;
-	cnt++;
+int map[300][300];
+int I, T, i, j;
+
+void bfs() {
+	queue<IJ> q;
+	cin >> i >> j;
+	q.push({ i, j, 0 });
 	map[i][j] = 1;
 
-	int di[] = { 1, -1, 0, 0 };
-	int dj[] = { 0, 0, 1, -1 };
-	for (int d = 0; d < 4; d++) {
-		int ni = i + di[d];
-		int nj = j + dj[d];
+	cin >> i >> j;
+	IJ goal{ i, j, 0 };
 
-		if (!(0 <= ni && ni < M) || !(0 <= nj && nj < N)) 
-			continue;
-		if (map[ni][nj])
-			continue;
+	int ans = 0;
+	while (!q.empty()) {
+		IJ cur = q.front(); q.pop();
 
-		dfs(ni, nj);
+		if (cur.i == goal.i && cur.j == goal.j) {
+			cout << cur.mv << "\n";
+			return;
+		}
+
+		int di[8] = { 2, 1, -1, -2, -2, -1, 1, 2 };
+		int dj[8] = { 1, 2, 2, 1, -1, -2, -2, -1 };
+		for (int d = 0; d < 8; d++) {
+			int ni = cur.i + di[d];
+			int nj = cur.j + dj[d];
+
+			if (!(0 <= ni && ni < I) || !(0 <= nj && nj < I))
+				continue;
+			if (map[ni][nj])
+				continue;
+
+			q.push({ ni, nj, cur.mv + 1 });
+			map[ni][nj] = 1;
+		}
 	}
 }
 
 int main() {
-	cin >> M >> N >> K;
-
-	while (K--) {
-		int bj, bi, ej, ei;
-		cin >> bj >> bi >> ej >> ei;
-		for (i = bi; i < ei; i++)
-			for (j = bj; j < ej; j++)
-				map[i][j] = 1;
+	cin >> T;
+	while (T--) {
+		cin >> I;
+		for (i = 0; i < I; i++)
+			fill(map[i], map[i] + I, 0);
+		bfs();
 	}
-
-	for (i = 0; i < M; i++)
-		for (j = 0; j < N; j++)
-			if (!map[i][j]) {
-				cnt = 0;
-				dfs(i, j);
-				area.push_back(cnt);
-			}
-
-	sort(area.begin(), area.end());
-
-	cout << area.size() << "\n";
-	for (int a : area)
-		cout << a << " ";
 }
