@@ -1,4 +1,4 @@
-﻿//problem No. 7576, 토마토
+﻿//problem No. 7569, 토마토
 #include <iostream>
 #include <vector>
 #include <queue>
