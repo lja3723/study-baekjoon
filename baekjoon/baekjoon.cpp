@@ -1,14 +1,17 @@
-﻿//problem No. 10026, 적록색약
+﻿//problem No. 2583, 영역 구하기
 #include <iostream>
+#include <vector>
+#include <algorithm>
 using namespace std;
 
-int N, i, j, hMax;
+int M, N, K, i, j, cnt;
 int map[100][100];
-int visited[100][100];
+vector<int> area;
 
 void dfs(int i, int j) {
-	if (visited[i][j]) return;
-	visited[i][j] = 1;
+	if (map[i][j]) return;
+	cnt++;
+	map[i][j] = 1;
 
 	int di[] = { 1, -1, 0, 0 };
 	int dj[] = { 0, 0, 1, -1 };
@@ -16,9 +19,9 @@ void dfs(int i, int j) {
 		int ni = i + di[d];
 		int nj = j + dj[d];
 
-		if (!(0 <= ni && ni < N) || !(0 <= nj && nj < N)) 
+		if (!(0 <= ni && ni < M) || !(0 <= nj && nj < N)) 
 			continue;
-		if (visited[ni][nj])
+		if (map[ni][nj])
 			continue;
 
 		dfs(ni, nj);
@@ -26,34 +29,27 @@ void dfs(int i, int j) {
 }
 
 int main() {
-	cin >> N;
+	cin >> M >> N >> K;
 
-	for (i = 0; i < N; i++)
-		for (j = 0; j < N; j++) {
-			cin >> map[i][j];
-			hMax = max(hMax, map[i][j]);
-		}
-
-	int ans = 0, h, cnt;
-	for (h = 0; h <= hMax; h++) {
-		for (i = 0; i < N; i++)
-			fill(visited[i], visited[i] + N, 0);
-
-		for (i = 0; i < N; i++)
-			for (j = 0; j < N; j++)
-				if (map[i][j] <= h)
-					visited[i][j] = 1;
-
-		cnt = 0;
-		for (i = 0; i < N; i++)
-			for (j = 0; j < N; j++)
-				if (!visited[i][j]) {
-					cnt++;
-					dfs(i, j);
-				}
-
-		ans = max(ans, cnt);
+	while (K--) {
+		int bj, bi, ej, ei;
+		cin >> bj >> bi >> ej >> ei;
+		for (i = bi; i < ei; i++)
+			for (j = bj; j < ej; j++)
+				map[i][j] = 1;
 	}
 
-	cout << ans;
+	for (i = 0; i < M; i++)
+		for (j = 0; j < N; j++)
+			if (!map[i][j]) {
+				cnt = 0;
+				dfs(i, j);
+				area.push_back(cnt);
+			}
+
+	sort(area.begin(), area.end());
+
+	cout << area.size() << "\n";
+	for (int a : area)
+		cout << a << " ";
 }
