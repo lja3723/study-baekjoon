@@ -1,32 +1,25 @@
-﻿//problem No. 1655, 가운데를 말해요
+﻿//problem No. 11053, 가장 긴 증가하는 부분 수열
 #include <iostream>
-#include <queue>
 #include <vector>
 using namespace std;
  
+int N, i, j;
+int A[1001];
+int dp[1001];
+
 int main() {
-	ios::sync_with_stdio(0); cin.tie(0);
-	int N; cin >> N;
-	priority_queue<int> pqL;
-	priority_queue<int, vector<int>, greater<int>> pqR;
+	cin >> N;
+	for (i = 1; i <= N; i++) cin >> A[i];
 
-	while (N--) {
-		int d; cin >> d;
+	int ans = 0;
+	for (i = 1; i <= N; i++) {
+		dp[i] = 1;
+		for (j = 1; j < i; j++) 
+			if (A[j] < A[i]) 
+				dp[i] = max(dp[i], dp[j] + 1);		
 
-		if (pqL.empty() || d <= pqL.top())
-			pqL.push(d);
-		else
-			pqR.push(d);
-
-		if (pqL.size() >= pqR.size() + 2) {
-			pqR.push(pqL.top());
-			pqL.pop();
-		}
-		else if (pqL.size() + 1 <= pqR.size()) {
-			pqL.push(pqR.top());
-			pqR.pop();
-		}
-
-		cout << pqL.top() << "\n";
+		ans = max(ans, dp[i]);
 	}
+
+	cout << ans;
 }
