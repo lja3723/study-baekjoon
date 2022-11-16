@@ -1,23 +1,48 @@
-﻿//problem No. 2156, 포도주 시식
+﻿//problem No. 7576, 토마토
 #include <iostream>
-#include <algorithm>
+#include <vector>
+#include <queue>
 using namespace std;
 
-int n, i;
-int dat[10001];
-int dp[10001];
+struct IJT { int i, j, t; }; //좌표(i,j) 시간t
+
+int map[1000][1000], i, j, N, M;
+queue<IJT> q;
 
 int main() {
-	cin >> n;
-	for (i = 1; i <= n; i++) cin >> dat[i];
+	cin >> M >> N;
 
-	dp[1] = dat[1];
-	dp[2] = dat[1] + dat[2];
+	int tCnt = 0; //처음 안익은 토마토 수
+	for (i = 0; i < N; i++)
+		for (j = 0; j < M; j++) {
+			cin >> map[i][j];
+			if (map[i][j] == 1)
+				q.push({ i, j, 0 });
+			else if (map[i][j] == 0)
+				tCnt++;
+		}
 
-	for (i = 3; i <= n; i++) {
-		dp[i] = max(dp[i - 2], dp[i - 3] + dat[i - 1]) + dat[i];
-		dp[i] = max(dp[i - 1], dp[i]);
+	int ans = 0;
+	int rtCnt = 0; //시간이 지나 익은 토마토 수
+	while (!q.empty()) {
+		IJT cur = q.front(); q.pop();
+		ans = cur.t;
+
+		int di[] = { 0, 0, -1, 1 };
+		int dj[] = { -1, 1, 0, 0 };
+		for (i = 0; i < 4; i++) {
+			int ni = cur.i + di[i];
+			int nj = cur.j + dj[i];
+			if (!(0 <= ni && ni < N) || !(0 <= nj && nj < M))
+				continue;
+			if (map[ni][nj] == -1 || map[ni][nj] == 1)
+				continue;
+
+			map[ni][nj] = 1;
+			rtCnt++;
+			q.push({ ni, nj, cur.t + 1 });
+		}
 	}
 
-	cout << dp[n];
+	cout << (tCnt == rtCnt ? ans : -1);
 }
