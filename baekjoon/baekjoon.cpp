@@ -1,25 +1,23 @@
-﻿//problem No. 11053, 가장 긴 증가하는 부분 수열
+﻿//problem No. 2156, 포도주 시식
 #include <iostream>
-#include <vector>
+#include <algorithm>
 using namespace std;
- 
-int N, i, j;
-int A[1001];
-int dp[1001];
+
+int n, i;
+int dat[10001];
+int dp[10001];
 
 int main() {
-	cin >> N;
-	for (i = 1; i <= N; i++) cin >> A[i];
+	cin >> n;
+	for (i = 1; i <= n; i++) cin >> dat[i];
 
-	int ans = 0;
-	for (i = 1; i <= N; i++) {
-		dp[i] = 1;
-		for (j = 1; j < i; j++) 
-			if (A[j] < A[i]) 
-				dp[i] = max(dp[i], dp[j] + 1);		
+	dp[1] = dat[1];
+	dp[2] = dat[1] + dat[2];
 
-		ans = max(ans, dp[i]);
+	for (i = 3; i <= n; i++) {
+		dp[i] = max(dp[i - 2], dp[i - 3] + dat[i - 1]) + dat[i];
+		dp[i] = max(dp[i - 1], dp[i]);
 	}
 
-	cout << ans;
+	cout << dp[n];
 }
