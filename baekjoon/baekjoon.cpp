@@ -1,31 +1,29 @@
-﻿//problem No. 1541, 잃어버린 괄호
+﻿//problem No. 16953, A → B
 #include <iostream>
-#include <vector>
-#include <string>
-#include <sstream>
 using namespace std;
 
+int a, b;
+
 int main() {
-	string input, p;
-	cin >> input;
-
-	vector<string> sv1;
-	stringstream ss1(input);
-	while (getline(ss1, p, '-')) //{
-		//cout << p << "\n";
-		sv1.push_back(p);
-	//}
-
-	//cout << "first clear\n\n";
-
-	int sum = 0;
-	for (int i = 0; i < sv1.size(); i++) {
-		stringstream ss2(sv1[i]);
-		while (getline(ss2, p, '+')) //{
-			//cout << p << "\n";
-			sum += i == 0 ? stoi(p) : -stoi(p);
-		//}
+	cin >> a >> b;
+	int cnt = 0;
+	while (a < b) {
+		if (b % 2 == 0) {
+			cnt++;
+			b /= 2;
+		}
+		else if ((b - 1) % 10 == 0) {
+			cnt++;
+			b /= 10;
+		}
+		else {
+			cout << "-1";
+			return 0;
+		}
 	}
 
-	cout << sum;
+	if (a == b)
+		cout << cnt + 1;
+	else
+		cout << "-1";
 }
