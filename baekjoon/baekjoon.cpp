@@ -1,26 +1,33 @@
-﻿//problem No. 13305, 주유소
+﻿//problem No. 1946, 신입 사원
 #include <iostream>
+#include <vector>
+#include <algorithm>
 using namespace std;
 
-int N, city[100000], road[100000];
-
 int main() {
-	cin >> N;
-	for (int i = 0; i < N - 1; i++)
-		cin >> road[i];
-	for (int i = 0; i < N; i++) 
-		cin >> city[i];
-	
-	long long dist = 0, cost = 0, minCity = city[0];
-	for (int i = 1; i < N; i++) {
-		dist += road[i - 1];
-		if (minCity > city[i]) {
-			cost += minCity * dist;
-			minCity = city[i];
-			dist = 0;
-		}
-	}
-	cost += minCity * dist;
+	int T, N, i;
 
-	cout << cost;
+	cin >> T;
+	while (T--) {
+		cin >> N;
+
+		vector<pair<int, int>> v;
+		for (i = 0; i++ < N;) {
+			int a, b;
+			cin >> a >> b;
+			v.push_back({ a, b });
+		}
+		sort(begin(v), end(v));
+
+		int ans = 1;
+		int rank = v[0].second;
+		for (i = 1; i < N; i++) {
+			if (v[i].second < rank) {
+				rank = v[i].second;
+				ans++;
+			}
+		}
+
+		cout << ans << "\n";
+	}
 }
