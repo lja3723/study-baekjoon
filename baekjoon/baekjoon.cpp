@@ -1,26 +1,22 @@
-﻿//problem No. 13305, 주유소
+﻿//problem No. 1439, 뒤집기
 #include <iostream>
+#include <vector>
 using namespace std;
 
-int N, city[100000], road[100000];
+string S;
+int cnt[2];
 
 int main() {
-	cin >> N;
-	for (int i = 0; i < N - 1; i++)
-		cin >> road[i];
-	for (int i = 0; i < N; i++) 
-		cin >> city[i];
-	
-	long long dist = 0, cost = 0, minCity = city[0];
-	for (int i = 1; i < N; i++) {
-		dist += road[i - 1];
-		if (minCity > city[i]) {
-			cost += minCity * dist;
-			minCity = city[i];
-			dist = 0;
+	cin >> S;
+	char cur = S[0];
+
+	for (int i = 1; i < S.size(); i++) {
+		if (cur != S[i]) {
+			cnt[cur - '0']++;
+			cur = S[i];
 		}
 	}
-	cost += minCity * dist;
+	cnt[cur - '0']++;
 
-	cout << cost;
+	cout << min(cnt[0], cnt[1]);
 }
