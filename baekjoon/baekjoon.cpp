@@ -1,30 +1,40 @@
-﻿//problem No. 1339, 단어 수학
+﻿//problem No. 1915, 가장 큰 정사각형
 #include <iostream>
-#include <vector>
-#include <algorithm>
-#include <map>
 using namespace std;
 
-int N, i, j, u;
-string dat[10];
-vector<int> w(26, 0);
+int N, M, i, j, k;
+int map[1000][1000], dp[1000][1000];
 
 int main() {
-	cin >> N;
+	cin >> N >> M;
+	for (i = 0; i < N; i++) {
+		string s;
+		cin >> s;
+		for (j = 0; j < M; j++)
+			map[i][j] = s[j] - '0';
+	}
+	int ans = 0;
 
 	for (i = 0; i < N; i++) {
-		cin >> dat[i];
-		for (j = 1, u = 1; j <= dat[i].size(); j++) {
-			w[dat[i][dat[i].size() - j] - 'A'] += u;
-			u *= 10;
-		};
+		dp[i][0] = map[i][0];
+		ans = max(ans, dp[i][0]);
 	}
 
-	sort(w.begin(), w.end(), greater<>());
+	for (j = 1; j < M; j++) {
+		dp[0][j] = map[0][j];
+		ans = max(ans, dp[0][j]);
+	}
 
-	int ans = 0;
-	for (i = 0; i < 10; i++)
-		ans += w[i] * (9 - i);
-	
-	cout << ans;
+	for (i = 1; i < N; i++) {
+		for (j = 1; j < M; j++) {
+			if (map[i][j] == 0)
+				dp[i][j] = 0;
+			else 
+				dp[i][j] = min({ dp[i - 1][j - 1], dp[i - 1][j], dp[i][j - 1] }) + 1;
+			
+			ans = max(ans, dp[i][j]);
+		}
+	}
+
+	cout << ans * ans;
 }
