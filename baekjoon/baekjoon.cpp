@@ -1,36 +1,30 @@
-﻿//problem No. 1931, 회의실 배정
+﻿//problem No. 1339, 단어 수학
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <map>
 using namespace std;
 
-struct SE { int s, e; };
-
-int N, n, i, j;
-vector<SE> T;
+int N, i, j, u;
+string dat[10];
+vector<int> w(26, 0);
 
 int main() {
 	cin >> N;
-	n = N;
-	while (n--) {
-		cin >> i >> j;
-		T.push_back({ i, j });
-	}
-	sort(begin(T), end(T), [](SE& l, SE& r) {
-		if (l.e != r.e)
-		return l.e < r.e;
-		else
-			return l.s < r.s;
-	});
 
-	int cnt = 1, last = 0;
-	for (i = 1; i < N; i++) {
-		if (T[i].s >= T[last].e) {
-			cnt++;
-			last = i;
-		}
+	for (i = 0; i < N; i++) {
+		cin >> dat[i];
+		for (j = 1, u = 1; j <= dat[i].size(); j++) {
+			w[dat[i][dat[i].size() - j] - 'A'] += u;
+			u *= 10;
+		};
 	}
 
+	sort(w.begin(), w.end(), greater<>());
 
-	cout << cnt;
+	int ans = 0;
+	for (i = 0; i < 10; i++)
+		ans += w[i] * (9 - i);
+	
+	cout << ans;
 }
