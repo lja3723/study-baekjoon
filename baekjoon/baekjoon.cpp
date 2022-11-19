@@ -1,30 +1,26 @@
-﻿//problem No. 1339, 단어 수학
+﻿//problem No. 1715, 카드 정렬하기
 #include <iostream>
-#include <vector>
-#include <algorithm>
-#include <map>
+#include <queue>
 using namespace std;
 
-int N, i, j, u;
-string dat[10];
-vector<int> w(26, 0);
+int N, i, d;
+priority_queue<int, vector<int>, greater<int>> pq;
 
 int main() {
 	cin >> N;
-
 	for (i = 0; i < N; i++) {
-		cin >> dat[i];
-		for (j = 1, u = 1; j <= dat[i].size(); j++) {
-			w[dat[i][dat[i].size() - j] - 'A'] += u;
-			u *= 10;
-		};
+		cin >> d;
+		pq.push(d);
 	}
 
-	sort(w.begin(), w.end(), greater<>());
-
 	int ans = 0;
-	for (i = 0; i < 10; i++)
-		ans += w[i] * (9 - i);
-	
+	while (pq.size() > 1) {
+		int x1, x2;
+		x1 = pq.top(); pq.pop();
+		x2 = pq.top(); pq.pop();
+		ans += x1 + x2;
+		pq.push(x1 + x2);
+	}
+
 	cout << ans;
 }
