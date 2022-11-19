@@ -1,22 +1,36 @@
-﻿//problem No. 1439, 뒤집기
+﻿//problem No. 1931, 회의실 배정
 #include <iostream>
 #include <vector>
+#include <algorithm>
 using namespace std;
 
-string S;
-int cnt[2];
+struct SE { int s, e; };
+
+int N, n, i, j;
+vector<SE> T;
 
 int main() {
-	cin >> S;
-	char cur = S[0];
+	cin >> N;
+	n = N;
+	while (n--) {
+		cin >> i >> j;
+		T.push_back({ i, j });
+	}
+	sort(begin(T), end(T), [](SE& l, SE& r) {
+		if (l.e != r.e)
+		return l.e < r.e;
+		else
+			return l.s < r.s;
+	});
 
-	for (int i = 1; i < S.size(); i++) {
-		if (cur != S[i]) {
-			cnt[cur - '0']++;
-			cur = S[i];
+	int cnt = 1, last = 0;
+	for (i = 1; i < N; i++) {
+		if (T[i].s >= T[last].e) {
+			cnt++;
+			last = i;
 		}
 	}
-	cnt[cur - '0']++;
 
-	cout << min(cnt[0], cnt[1]);
+
+	cout << cnt;
 }
