@@ -1,5 +1,6 @@
 ﻿//problem No. 1915, 가장 큰 정사각형
 #include <iostream>
+#include <algorithm>
 using namespace std;
 
 int N, M, i, j, k;
