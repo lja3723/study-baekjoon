@@ -1,33 +1,47 @@
-﻿//problem No. 1915, 가장 큰 정사각형
+﻿//problem No. 2193, 이친수
 #include <iostream>
 #include <algorithm>
 using namespace std;
 
-int N, M, i, j, k;
-int map[1000][1000], dp[1000][1000];
+int n;
+long long dp[91][2];
+
+/*
+ \  0  1  2  3  4  5  6  7  8
+0 | 0  0  1  
+1 | 0  1  0  
+
+
+10 0
+
+10 1
+
+100 0
+101 0
+
+100 1
+
+
+1000 0
+1001 0
+1010 0
+
+1000 1
+
+*/
 
 int main() {
-	cin >> N >> M;
-	for (i = 0; i < N; i++) {
-		string s;
-		cin >> s;
-		for (j = 0; j < M; j++)
-			map[i][j] = s[j] - '0';
+	cin >> n;
+
+	dp[1][0] = 0;
+	dp[1][1] = 1;
+	dp[2][0] = 1;
+	dp[2][1] = 0;
+
+	for (int i = 3; i <= n; i++) {
+		dp[i][0] = dp[i - 1][0] + dp[i - 1][1];
+		dp[i][1] = dp[i - 1][0];
 	}
 
-	int ans = 0;
-	for (i = 1; i < N; i++) {
-		for (j = 1; j < M; j++) {
-			if (i == 0 || j == 0)
-				dp[i][j] = map[i][j];
-			else if (map[i][j] == 0)
-				dp[i][j] = 0;
-			else 
-				dp[i][j] = min({ dp[i - 1][j - 1], dp[i - 1][j], dp[i][j - 1] }) + 1;
-			
-			ans = max(ans, dp[i][j]);
-		}
-	}
-
-	cout << ans * ans;
+	cout << dp[n][0] + dp[n][1];
 }
