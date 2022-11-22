@@ -1,32 +1,23 @@
-﻿//problem 2565, 전깃줄
+﻿//problem 11722, 가장 긴 감소하는 부분 수열
 #include <iostream>
-#include <vector>
-#include <algorithm>
 using namespace std;
 
-vector<pair<int, int>> v;
-int LIS[101], N, i, a, b;
+int dat[1001], N, i, j, LDS[1001];
 
 int main() {
 	cin >> N;
 	
-	for (i = 0; i < N; i++) {
-		cin >> a >> b;
-		v.push_back({ a, b });
-	}
-	v.push_back({ 0, 0 });
-	sort(begin(v), end(v));
+	for (i = 1; i <= N; i++) 
+		cin >> dat[i];
 
-	int lis = 0;
-	//최장 증가 부분수열을 구함
-	for (a = 1; a <= N; a++) {
-		LIS[a] = 1;
-		for (b = 1; b < a; b++)
-			if (v[b].second < v[a].second)
-				LIS[a] = max(LIS[a], LIS[b] + 1);
-
-		lis = max(lis, LIS[a]);
+	int ans = 0;
+	for (i = 1; i <= N; i++) {
+		LDS[i] = 1;
+		for (j = 1; j < i; j++)
+			if (dat[j] > dat[i])
+				LDS[i] = max(LDS[i], LDS[j] + 1);
+		ans = max(ans, LDS[i]);
 	}
 
-	cout << N - lis;
+	cout << ans;
 }
