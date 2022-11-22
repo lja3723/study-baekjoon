@@ -1,8 +1,8 @@
-﻿//problem 11722, 가장 긴 감소하는 부분 수열
+﻿//problem 11055, 가장 큰 증가 부분 수열
 #include <iostream>
 using namespace std;
 
-int dat[1001], N, i, j, LDS[1001];
+int dat[1001], N, i, j, dp[1001];
 
 int main() {
 	cin >> N;
@@ -12,11 +12,11 @@ int main() {
 
 	int ans = 0;
 	for (i = 1; i <= N; i++) {
-		LDS[i] = 1;
+		dp[i] = dat[i];
 		for (j = 1; j < i; j++)
-			if (dat[j] > dat[i])
-				LDS[i] = max(LDS[i], LDS[j] + 1);
-		ans = max(ans, LDS[i]);
+			if (dat[j] < dat[i])
+				dp[i] = max(dp[i], dp[j] + dat[i]);
+		ans = max(ans, dp[i]);
 	}
 
 	cout << ans;
