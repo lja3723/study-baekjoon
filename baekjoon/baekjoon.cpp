@@ -1,19 +1,32 @@
-﻿//problem 9251, LCS
+﻿//problem 2565, 전깃줄
 #include <iostream>
+#include <vector>
+#include <algorithm>
 using namespace std;
 
-int dp[1001][1001];
+vector<pair<int, int>> v;
+int LIS[101], N, i, a, b;
 
 int main() {
-	string a, b;
-	cin >> a >> b;
+	cin >> N;
+	
+	for (i = 0; i < N; i++) {
+		cin >> a >> b;
+		v.push_back({ a, b });
+	}
+	v.push_back({ 0, 0 });
+	sort(begin(v), end(v));
 
-	for (int i = 1; i <= a.size(); i++) 
-		for (int j = 1; j <= b.size(); j++) 
-			if (a[i - 1] == b[j - 1]) 
-				dp[i][j] = dp[i - 1][j - 1] + 1;
-			else
-				dp[i][j] = max(dp[i][j - 1], dp[i - 1][j]);
+	int lis = 0;
+	//최장 증가 부분수열을 구함
+	for (a = 1; a <= N; a++) {
+		LIS[a] = 1;
+		for (b = 1; b < a; b++)
+			if (v[b].second < v[a].second)
+				LIS[a] = max(LIS[a], LIS[b] + 1);
 
-	cout << dp[a.size()][b.size()];
+		lis = max(lis, LIS[a]);
+	}
+
+	cout << N - lis;
 }
