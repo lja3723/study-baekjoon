@@ -1,36 +1,54 @@
-﻿//problem 11054, 가장 긴 바이토닉 부분 수열
+﻿//problem 2206, 벽 부수고 이동하기
 #include <iostream>
-#include <vector>
-#include <algorithm>
+#include <queue>
 using namespace std;
 
-int dat[1001], N, i, j, LIS[1001], LDS[1001];
+struct IJB { int i, j, b; };
+
+int M, N, i;
+string map[1000];
+int vt[1000][1000][2];
+
+int bfs() {
+	queue<IJB> q;
+	q.push({ 0, 0, 0 });
+	vt[0][0][0] = 1;
+
+	while (!q.empty()) {
+		IJB c = q.front(); q.pop();
+
+		if (c.i == N - 1 && c.j == M - 1)
+			return vt[c.i][c.j][c.b];
+
+		int di[] = { 1, -1, 0, 0 };
+		int dj[] = { 0, 0, 1, -1 };
+		for (int d = 0; d < 4; d++) {
+			int ni = c.i + di[d];
+			int nj = c.j + dj[d];
+			int nb = c.b;
+			int goUp = 0;
+			
+			if (!(0 <= ni && ni < N) || !(0 <= nj && nj < M))
+				continue;
+			if (vt[ni][nj][nb])
+				continue;
+			if (map[ni][nj] == '1') {
+				if (nb == 1)
+					continue;
+				else
+					nb++, goUp++;
+			}
+
+			q.push({ ni, nj, nb });
+			vt[ni][nj][nb] = vt[c.i][c.j][nb - goUp] + 1;
+		}
+	}
+
+	return -1;
+}
 
 int main() {
-	cin >> N;
-
-	for (i = 1; i <= N; i++) cin >> dat[i];
-
-	//i가 끝점인 LIS 구하기
-	for (i = 1; i <= N; i++) {
-		LIS[i] = 1;
-		for (j = 1; j < i; j++)
-			if (dat[j] < dat[i])
-				LIS[i] = max(LIS[i], LIS[j] + 1);
-	}
-
-	//i가 시작점인 LDS 구하기
-	for (i = N; i >= 1; i--) {
-		LDS[i] = 1;
-		for (j = N; i < j; j--)
-			if (dat[i] > dat[j])
-				LDS[i] = max(LDS[i], LDS[j] + 1);
-	}
-
-	//i가 최대값인 LBS 구하기
-	int ans = 0;
-	for (i = 1; i <= N; i++)
-		ans = max(ans, LIS[i] + LDS[i] - 1);
-
-	cout << ans;
+	cin >> N >> M;
+	for (i = 0; i < N; i++) cin >> map[i];
+	cout << bfs();
 }
