@@ -142,7 +142,6 @@
     <ClCompile Include="baekjoon.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="11054.txt" />
     <Text Include="2580.txt" />
     <Text Include="temp.txt" />
     <Text Include="1005.txt" />
