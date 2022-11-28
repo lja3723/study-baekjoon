@@ -1,23 +1,18 @@
-﻿//problem No. 1676, 팩토리얼 0의 개수
+﻿//problem No. 2559, 수열
 #include <iostream>
 using namespace std;
 
+int N, K, i, ans = -1e9, dat[100001];
+
 int main() {
-	int N, d2 = 0, d5 = 0;
-
-	cin >> N;
-
-	for (int n = 1; n <= N; n++) {
-		int k = n;
-		while (k % 5 == 0) {
-			k /= 5;
-			d5++;
-		}
-		while (k % 2 == 0) {
-			k /= 2;
-			d2++;
-		}
+	cin >> N >> K;
+	for (i = 1; i <= N; i++) {
+		cin >> dat[i];
+		dat[i] += dat[i - 1];
 	}
 
-	cout << min(d2, d5);
+	for (i = K; i <= N; i++) 
+		ans = max(ans, dat[i] - dat[i - K]);
+	
+	cout << ans;
 }
