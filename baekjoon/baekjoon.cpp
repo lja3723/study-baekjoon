@@ -1,60 +1,87 @@
-﻿//problem No. 1043, 거짓말
+﻿//problem No. 1753, 최단경로
 #include <iostream>
 #include <vector>
+#include <queue>
 using namespace std;
+typedef pair<int, int> pii;
 
-int N, M, i, j, party[50][51], visited[51], know;
-vector<int> knows, g[51];
+const int MAX = 20000, INF = 1e9;
 
 /*
-반례:
-9 4
-1 1
-4 1 2 3 4
-4 5 6 7 8
-2 8 9
-2 4 9
-*/
-void dfs(int v) {
-	if (visited[v]) return;
-	visited[v] = 1;
+데이터 형식:
+N(정점수) M(간선수) S(시작정점)
+시작정점 끝정점 가중치
+...(M개)...
 
-	for (int u : g[v]) {
-		dfs(u);
-	}
-}
+case 1:
+6 9 1
+1 3 9
+1 2 7
+2 3 10
+2 4 15
+3 4 11
+4 5 6
+5 6 9
+6 1 14
+7 3 2
+ANS: 0 7 9 20 20 11
+
+case 2:
+5 8 1
+1 2 5
+1 3 3
+1 4 7
+2 3 4
+3 4 3
+2 5 7
+3 5 8
+4 5 4
+ANS: 0 5 3 6 10
+*/
+
+vector<pii> g[MAX];
+int dist[MAX], visited[MAX];
+int V, E, K;
+
 
 int main() {
-	cin >> N >> M >> know;
-	for (i = 0; i < know; i++) {
-		cin >> j;
-		knows.push_back(j);
+	ios::sync_with_stdio(0);
+	cin.tie(0);
+	cout.tie(0);
+
+	cin >> V >> E >> K;
+	K--;
+	for (int i = 0; i < E; i++) {
+		int v, u, d;
+		cin >> v >> u >> d;
+		g[v - 1].push_back({ u - 1, d });
 	}
 
-	for (i = 0; i < M; i++) {
-		cin >> party[i][0]; //파티 참여인원
+	fill(dist, dist + MAX, INF);
+	dist[K] = 0;
 
-		for (j = 1; j <= party[i][0]; j++) {
-			cin >> party[i][j];
-			if (j > 1) { //파티 참여인원끼리의 관계생성
-				g[party[i][j - 1]].push_back(party[i][j]);
-				g[party[i][j]].push_back(party[i][j - 1]);
+	priority_queue<pii, vector<pii>, greater<pii>> pq;
+	pq.push({ dist[K], K}); //거리, 정점
+	
+	while (!pq.empty()) {
+		int c = pq.top().first;
+		int v = pq.top().second;
+		pq.pop();
+
+		for (int i = 0; i < g[v].size(); i++) {
+			int u = g[v][i].first;
+			int nc = c + g[v][i].second;
+			if (nc < dist[u]) {
+				dist[u] = nc;
+				pq.push({ nc, u });
 			}
 		}
 	}
 
-	for (int v : knows) dfs(v);
-
-	int ans = 0;
-	for (i = 0; i < M; i++) {
-		know = 0;
-		for (j = 1; !know && j <= party[i][0]; j++)
-			if (visited[party[i][j]])
-				know = 1;
-
-		if (!know) //진실을 아는 사람이 없는 파티
-			ans++;
+	for (int i = 0; i < V; i++) {
+		if (dist[i] == INF)
+			cout << "INF\n";
+		else
+			cout << dist[i] << "\n";
 	}
-
-	cout << ans;
 }
