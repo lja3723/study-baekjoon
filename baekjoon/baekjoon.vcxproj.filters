@@ -33,8 +33,5 @@
     <Text Include="9252.txt">
       <Filter>임시 소스저장</Filter>
     </Text>
-    <Text Include="1629.txt">
-      <Filter>임시 소스저장</Filter>
-    </Text>
   </ItemGroup>
 </Project>

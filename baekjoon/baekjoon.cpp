@@ -1,38 +1,24 @@
-﻿//problem No. 9252, LCS 2
+﻿//problem No. 1629, 곱셈
 #include <iostream>
-#include <vector>
-#include <algorithm>
 using namespace std;
+typedef long long ll;
 
-int dp[1001][1001], i, j;
-string a, b, ans;
+long long A, B, C;
+
+long long ans(long long b) {
+	if (b == 1)
+		return A % C;
+
+	auto tmp = ans(b / 2);
+
+	if (b % 2 == 0)
+		return tmp * tmp % C;
+
+	return tmp * ans(b / 2 + 1) % C;
+}
 
 int main() {
-	cin >> a >> b;
-	a = " " + a;
-	b = " " + b;
-	for (i = 1; i < a.size(); i++)
-		for (j = 1; j < b.size(); j++)
-			if (a[i] == b[j])
-				dp[i][j] = dp[i - 1][j - 1] + 1;
-			else
-				dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
+	cin >> A >> B >> C;
 
-	i = a.size() - 1;
-	j = b.size() - 1;
-	while (dp[i][j] != 0) {
-
-		if (dp[i][j] == dp[i - 1][j])
-			i--;
-		else if (dp[i][j] == dp[i][j - 1])
-			j--;
-		else {
-			ans.push_back(a[i]);
-			i--, j--;
-		}
-	}
-	reverse(begin(ans), end(ans));
-
-	cout << dp[a.size() - 1][b.size() - 1] << "\n" << ans;
-
+	cout << ans(B);
 }
