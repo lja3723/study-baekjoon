@@ -1,16 +1,15 @@
-﻿//problem No. 1167, 트리의 지름
+//problem No. 1967, Ʈ���� ����
 #include <iostream>
 #include <vector>
 #include <queue>
 #include <algorithm>
 using namespace std;
-#define MAX 100001
+#define MAX 10001
 
 int V;
 vector<pair<int, int>> g[MAX];
-int vt[MAX];
+int vt[MAX]; //�Ÿ�����
 
-//vt에 v로부터 떨어진 거리가 저장됨
 void bfs(int v) {
 	for (int i = 0; i < MAX; i++)
 		vt[i] = -1;
@@ -38,17 +37,13 @@ void bfs(int v) {
 int main() {
 	cin >> V;
 
-	for (int i = 0; i < V; i++) {
+	for (int i = 0; i < V - 1; i++) {
 		int v, u, d;
-		cin >> v >> u;
-		while (u != -1) {
-			cin >> d;
-			g[v].push_back({ u, d });
-			cin >> u;
-		}
+		cin >> v >> u >> d;
+		g[v].push_back({ u, d });
+		g[u].push_back({ v, d });
 	}
 
-	//임의의 한 정점에서 가장 먼 정점을 찾고, 그 정점에서 가장 먼 정점을 출력
 	bfs(1);
 	bfs(max_element(begin(vt), end(vt)) - begin(vt));
 	cout << *max_element(begin(vt), end(vt));
