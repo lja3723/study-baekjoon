@@ -142,12 +142,11 @@
     <ClCompile Include="baekjoon.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="1967.txt" />
+    <Text Include="solve%291967.txt" />
     <Text Include="2580.txt" />
-    <Text Include="9252.txt" />
+    <Text Include="solve%299252.txt" />
     <Text Include="temp.txt" />
     <Text Include="1005.txt" />
-    <Text Include="1167.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
