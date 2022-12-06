@@ -1,67 +1,50 @@
-﻿//problem No. 
-//가능한 모든 LCS 리스트 구하기
+﻿//problem No. 1967, 트리의 지름
 #include <iostream>
 #include <vector>
-#include <set>
+#include <queue>
 #include <algorithm>
 using namespace std;
+#define MAX 10001
 
-void BackTracking(
-	int i, int j, int LCSval, 
-	string& str1, string& LCSstr, 
-	set<string>& retList, vector<vector<int>>& LCS) 
-{
-	if (LCS[i][j] == 0 && LCSstr.size() == LCSval) {
-		string ans(LCSstr);
-		reverse(begin(ans), end(ans));
-		retList.insert(ans);
-		return;
+int V;
+vector<pair<int, int>> g[MAX];
+int vt[MAX]; //거리저장
+
+void bfs(int v) {
+	for (int i = 0; i < MAX; i++)
+		vt[i] = -1;
+
+	queue<int> q;
+	vt[v] = 0;
+	q.push(v);
+
+	while (!q.empty()) {
+		int cv = q.front();
+		q.pop();
+
+		for (auto& e : g[cv]) {
+			int u = e.first;
+			int d = e.second;
+
+			if (vt[u] == -1) {
+				vt[u] = vt[cv] + d;
+				q.push(u);
+			}
+		}
 	}
-
-	if (LCS[i][j] == LCS[i - 1][j]) 
-		BackTracking(i - 1, j, LCSval, str1, LCSstr, retList, LCS);
-	
-	if (LCS[i][j] == LCS[i][j - 1]) 
-		BackTracking(i, j - 1, LCSval, str1, LCSstr, retList, LCS);
-	
-	if (LCS[i][j] != LCS[i - 1][j] && LCS[i][j] != LCS[i][j - 1]) {
-		LCSstr.push_back(str1[i]);
-		BackTracking(i - 1, j - 1, LCSval, str1, LCSstr, retList, LCS);
-		LCSstr.pop_back();
-	}
-}
-
-vector<string> getLCSList(string str1, string str2) {
-	int i = 1, j = 1;
-	set<string> ret;
-	vector<vector<int>> LCS(str1.size() + 1, vector<int>(str2.size() + 1, 0));
-
-	str1 = " " + str1;
-	str2 = " " + str2;
-
-	for (i = 1; i < str1.size(); i++)
-		for (j = 1; j < str2.size(); j++)
-			if (str1[i] == str2[j])
-				LCS[i][j] = LCS[i - 1][j - 1] + 1;
-			else
-				LCS[i][j] = max(LCS[i - 1][j], LCS[i][j - 1]);
-
-	i--, j--;
-	string LCSstring;
-	int LCSval = LCS[i][j];
-	if (LCSval != 0)
-		BackTracking(i, j, LCSval, str1, LCSstring, ret, LCS);
-
-	return vector<string>(begin(ret), end(ret));
 }
 
 int main() {
-	string a, b;
-	cin >> a >> b;
-	vector<string> LCSList = getLCSList(a, b);
+	cin >> V;
 
-	cout << "List size: " << LCSList.size() << "\n";
-	for (auto& e : LCSList) {
-		cout << e << endl;
+	for (int i = 0; i < V - 1; i++) {
+		int v, u, d;
+		cin >> v >> u >> d;
+		g[v].push_back({ u, d });
+		g[u].push_back({ v, d });
 	}
+
+	bfs(1);
+	bfs(max_element(begin(vt), end(vt)) - begin(vt));
+	cout << *max_element(begin(vt), end(vt));
 }

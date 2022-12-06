@@ -30,10 +30,11 @@
     <Text Include="2580.txt">
       <Filter>임시 소스저장</Filter>
     </Text>
-    <Text Include="solve%299252.txt">
+    <Text Include="solve%291967.txt">
       <Filter>임시 소스저장</Filter>
     </Text>
-    <Text Include="solve%291967.txt">
+    <Text Include="impl)getLCSList.txt" />
+    <Text Include="13460.txt">
       <Filter>임시 소스저장</Filter>
     </Text>
   </ItemGroup>

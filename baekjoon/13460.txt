@@ -1,0 +1,29 @@
+//problem No. 13460, 구슬 탈출 2
+#include <iostream>
+using namespace std;
+
+struct IJ { int i, j; };
+
+int N, M; //세로, 가로
+char map[10][10];
+IJ red, blue;
+
+int main() {
+	cin >> N >> M;
+	for (int i = 0; i < N; i++) {
+		string row;
+		cin >> row;
+		for (int j = 0; j < M; j++) {
+			if (row[j] == 'R') {
+				map[i][j] = '.';
+				red = IJ{ i, j };
+			}
+			else if (row[j] == 'B') {
+				map[i][j] = '.';
+				blue = IJ{ i, j };
+			}
+			else
+				map[i][j] = row[j];
+		}
+	}
+}
