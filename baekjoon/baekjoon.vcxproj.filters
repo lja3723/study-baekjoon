@@ -23,9 +23,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="sol%291005.txt">
-      <Filter>임시 소스저장</Filter>
-    </Text>
     <Text Include="impl)getLCSList.txt" />
     <Text Include="13460.txt">
       <Filter>임시 소스저장</Filter>

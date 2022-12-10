@@ -145,7 +145,6 @@
     <Text Include="13460.txt" />
     <Text Include="14503.txt" />
     <Text Include="impl)getLCSList.txt" />
-    <Text Include="sol%291005.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,46 +1,36 @@
-﻿//problem No. 1005, ACM Craft
+﻿//problem No. 7662, 이중 우선순위 큐
 #include <iostream>
-#include <vector>
-#define MAX 1001
+#include <set>
 using namespace std;
 
-int T, N, K, W, D[MAX], minTime[MAX];
-vector<int> preBuildings[MAX];
-
-int getMinTime(int V) {
-    if (minTime[V] != -1)
-        return minTime[V];
-
-    if (preBuildings[V].empty())
-        return minTime[V] = D[V];
-
-    int maxTime = -1;
-    for (int u : preBuildings[V])
-        maxTime = max(maxTime, getMinTime(u));
-
-    return minTime[V] = maxTime + D[V];
+void sol() {
+	multiset<long long> ms;
+	int Q; cin >> Q;
+	while (Q--) {
+		char c;
+		long long d;
+		cin >> c >> d;
+		if (c == 'I')
+			ms.insert(d);
+		else if (!ms.empty()) {
+			if (d == 1)
+				ms.erase(--ms.end());
+			else
+				ms.erase(ms.begin());
+		}
+	}
+	
+	if (!ms.empty())
+		cout << *(--ms.end()) << " " << *ms.begin() << "\n";
+	else
+		cout << "EMPTY\n";
 }
 
-void solution() {
-    cin >> N >> K;
-    for (int i = 1; i <= N; i++) {
-        cin >> D[i];
-        preBuildings[i].clear();
-    }
-    for (int i = 0; i < K; i++) {
-        int X, Y;
-        cin >> X >> Y;
-        preBuildings[Y].push_back(X);
-    }
-    cin >> W;
+int main() {
+	cin.tie(0);
+	cout.tie(0);
+	ios::sync_with_stdio(0);
 
-    fill(minTime, minTime + MAX, -1);
-    cout << getMinTime(W) << "\n";
-}
-
-int main()
-{
-    cin.tie(0);
-    cin >> T;
-    while (T--) solution();
+	int T; cin >> T;
+	while (T--) sol();
 }
