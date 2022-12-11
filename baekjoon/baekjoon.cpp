@@ -1,36 +1,52 @@
-﻿//problem No. 7662, 이중 우선순위 큐
+﻿//problem No. 1389, 케빈 베이컨의 6단계 법칙
 #include <iostream>
-#include <set>
+#include <vector>
+#include <queue>
 using namespace std;
 
-void sol() {
-	multiset<long long> ms;
-	int Q; cin >> Q;
-	while (Q--) {
-		char c;
-		long long d;
-		cin >> c >> d;
-		if (c == 'I')
-			ms.insert(d);
-		else if (!ms.empty()) {
-			if (d == 1)
-				ms.erase(--ms.end());
-			else
-				ms.erase(ms.begin());
+int N, M, i, j;
+int dist[102][101];
+vector<int> g[101];
+
+void bfs(int v) {
+	fill(dist[v], dist[v] + 101, -1);
+
+	queue<int> q;
+	dist[v][v] = 0;
+	q.push(v);
+
+	while (!q.empty()) {
+		int cv = q.front(); q.pop();
+		for (int u : g[cv]) {
+			if (dist[v][u] == -1) {
+				dist[v][u] = dist[v][cv] + 1;
+				q.push(u);
+			}
 		}
 	}
-	
-	if (!ms.empty())
-		cout << *(--ms.end()) << " " << *ms.begin() << "\n";
-	else
-		cout << "EMPTY\n";
 }
 
 int main() {
-	cin.tie(0);
-	cout.tie(0);
-	ios::sync_with_stdio(0);
+	cin >> N >> M;
+	for (i = 0; i < M; i++) {
+		int v, u;
+		cin >> v >> u;
+		g[v].push_back(u);
+		g[u].push_back(v);
+	}
 
-	int T; cin >> T;
-	while (T--) sol();
+	for (i = 1; i <= N; i++)
+		bfs(i);
+
+	int minval = 2e9, idx;
+	for (i = 1; i <= N; i++) {
+		for (j = 1; j <= N; j++)
+			dist[101][i] += dist[i][j];
+		if (minval > dist[101][i]) {
+			minval = dist[101][i];
+			idx = i;
+		}
+	}
+
+	cout << idx;
 }
