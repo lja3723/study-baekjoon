@@ -1,52 +1,40 @@
-﻿//problem No. 1389, 케빈 베이컨의 6단계 법칙
+﻿//problem No. 1780, 종이의 개수
 #include <iostream>
-#include <vector>
-#include <queue>
 using namespace std;
 
-int N, M, i, j;
-int dist[102][101];
-vector<int> g[101];
+int N;
+int m[2187][2187], ans[3];
 
-void bfs(int v) {
-	fill(dist[v], dist[v] + 101, -1);
-
-	queue<int> q;
-	dist[v][v] = 0;
-	q.push(v);
-
-	while (!q.empty()) {
-		int cv = q.front(); q.pop();
-		for (int u : g[cv]) {
-			if (dist[v][u] == -1) {
-				dist[v][u] = dist[v][cv] + 1;
-				q.push(u);
-			}
-		}
+void solve(int si, int sj, int len) {
+	if (len == 1) {
+		ans[1 + m[si][sj]]++;
+		return;
 	}
+
+	int initVal = m[si][sj], isEqual = 1;
+	for (int i = si; isEqual && i < si + len; i++)
+		for (int j = sj; isEqual && j < sj + len; j++)
+			if (initVal != m[i][j])
+				isEqual = 0;
+
+	if (isEqual) {
+		ans[1 + initVal]++;
+		return;
+	}
+
+	len /= 3;
+	for (int i = 0; i < 3; i++)
+		for (int j = 0; j < 3; j++)
+			solve(si + i * len, sj + j * len, len);			
 }
 
 int main() {
-	cin >> N >> M;
-	for (i = 0; i < M; i++) {
-		int v, u;
-		cin >> v >> u;
-		g[v].push_back(u);
-		g[u].push_back(v);
-	}
+	cin >> N;
+	for (int i = 0; i < N; i++)
+		for (int j = 0; j < N; j++)
+			cin >> m[i][j];
 
-	for (i = 1; i <= N; i++)
-		bfs(i);
-
-	int minval = 2e9, idx;
-	for (i = 1; i <= N; i++) {
-		for (j = 1; j <= N; j++)
-			dist[101][i] += dist[i][j];
-		if (minval > dist[101][i]) {
-			minval = dist[101][i];
-			idx = i;
-		}
-	}
-
-	cout << idx;
+	solve(0, 0, N);
+	for (int i = 0; i < 3; i++)
+		cout << ans[i] << "\n";
 }
