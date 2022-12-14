@@ -1,40 +1,39 @@
-﻿//problem No. 1780, 종이의 개수
+﻿//problem No. 1992, 쿼드트리
 #include <iostream>
 using namespace std;
 
 int N;
-int m[2187][2187], ans[3];
+string map[64];
 
-void solve(int si, int sj, int len) {
-	if (len == 1) {
-		ans[1 + m[si][sj]]++;
-		return;
+bool isEqual(int bi, int bj, int len) {
+	for (int i = bi; i < bi + len; i++)
+		for (int j = bj; j < bj + len; j++)
+			if (map[i][j] != map[bi][bj])
+				return false;
+
+	return true;
+}
+
+string QuadTree(int bi, int bj, int len) {
+	string ret;
+	if (isEqual(bi, bj, len)) {
+		ret = map[bi][bj];
+		return ret;
 	}
 
-	int initVal = m[si][sj], isEqual = 1;
-	for (int i = si; isEqual && i < si + len; i++)
-		for (int j = sj; isEqual && j < sj + len; j++)
-			if (initVal != m[i][j])
-				isEqual = 0;
+	ret = "(";
+	len /= 2;
+	for (int i = 0; i < 2; i++)
+		for (int j = 0; j < 2; j++)
+			ret += QuadTree(bi + i * len, bj + j * len, len);
 
-	if (isEqual) {
-		ans[1 + initVal]++;
-		return;
-	}
-
-	len /= 3;
-	for (int i = 0; i < 3; i++)
-		for (int j = 0; j < 3; j++)
-			solve(si + i * len, sj + j * len, len);			
+	return ret + ")";
 }
 
 int main() {
 	cin >> N;
 	for (int i = 0; i < N; i++)
-		for (int j = 0; j < N; j++)
-			cin >> m[i][j];
+		cin >> map[i];
 
-	solve(0, 0, N);
-	for (int i = 0; i < 3; i++)
-		cout << ans[i] << "\n";
+	cout << QuadTree(0, 0, N);
 }
