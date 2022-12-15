@@ -1,47 +1,48 @@
-﻿//problem No. 14503, 로봇 청소기
+﻿//problem No. 2529, 부등호
 #include <iostream>
+#include <vector>
+#include <algorithm>
 using namespace std;
 
-int N, M;
-int R, C, D; //로봇청소기의 현재 좌표 & 방향
-int map[50][50];
+int K, isSelect[60];
+char pr[9];
+string ansMin, ansMax, tmpAns;
 
-//d(X)[i][j]: i방향을 향할때, X쪽의 좌표(r,c) = (j=0, j=1)
-int dLeft[4][2] = { {0, -1}, {-1, 0}, {0, 1}, {1, 0} };
-int dFront[4][2] = { {-1, 0}, {0, 1}, {1, 0}, {0, -1} };
+bool checkPr(int i, char cNext) {
+	if (pr[i] == '<')
+		return tmpAns[i] < cNext;
+	else
+		return tmpAns[i] > cNext;
+}
 
-int main()
-{
-	cin >> N >> M >> R >> C >> D;
-	for (int i = 0; i < N; i++)
-		for (int j = 0; j < M; j++)
-			cin >> map[i][j];
-
-	int ans = 0, able = 1;
-	while (1) {
-		if (able) {
-			map[R][C] = -1; //청소함
-			ans++;
-			able = 0;
-		}
-
-		for (int d = 0; !able && d < 4; d++) {
-			if (map[R + dLeft[D][0]][C + dLeft[D][1]] == 0)
-				able = 1;
-
-			if (--D == -1) D = 3; //turn left
-		}
-
-		if (able) {
-			R += dFront[D][0];
-			C += dFront[D][1];
-		}
-		else if (map[R - dFront[D][0]][C - dFront[D][1]] != 1) {
-			R -= dFront[D][0];
-			C -= dFront[D][1];
-		}
-		else break;
+void BackTrack() {
+	if (tmpAns.size() == K + 1) {
+		if (ansMin.empty()) 
+			ansMin = tmpAns;
+		ansMax = tmpAns;
+		return;
 	}
 
-	cout << ans;
+	for (char i = '0'; i <= '9'; i++) {
+		if (!isSelect[i]) {
+			if (tmpAns.empty() || checkPr(tmpAns.size() - 1, i)) {
+				isSelect[i]++;
+				tmpAns.push_back(i);
+				BackTrack();
+				isSelect[i]--;
+				tmpAns.pop_back();
+			}
+		}
+	}
+}
+
+int main() {
+	cin >> K;
+	for (int i = 0; i < K; i++)
+		cin >> pr[i];
+
+	for (int i = 0; i < 10; i++)
+		BackTrack();
+
+	cout << ansMax << "\n" << ansMin;
 }
