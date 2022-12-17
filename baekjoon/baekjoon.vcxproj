@@ -143,8 +143,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="13460.txt" />
-    <Text Include="2573.txt" />
-    <Text Include="sol%292644.txt" />
+    <Text Include="sol%292573.txt" />
     <Text Include="impl)getLCSList.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

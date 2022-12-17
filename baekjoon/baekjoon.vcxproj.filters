@@ -27,10 +27,7 @@
     <Text Include="13460.txt">
       <Filter>임시 소스저장</Filter>
     </Text>
-    <Text Include="sol%292644.txt">
-      <Filter>임시 소스저장</Filter>
-    </Text>
-    <Text Include="2573.txt">
+    <Text Include="sol%292573.txt">
       <Filter>임시 소스저장</Filter>
     </Text>
   </ItemGroup>
