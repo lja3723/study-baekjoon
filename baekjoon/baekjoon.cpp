@@ -1,32 +1,38 @@
-﻿//problem No. 12873, 기념품
+﻿//problem No. 5014, 스타트링크
 #include <iostream>
-#include <list>
 #include <queue>
 using namespace std;
-long long caseT, shout;
-int N;
+
+int v[1000001];
+int F, S, G, U, D;
 
 int main() {
-	cin >> N;
+	cin >> F >> S >> G >> U >> D;
+	for (int i = 1; i <= F; i++)
+		v[i] = -1;
+
 	queue<int> q;
+	q.push(S);
+	v[S] = 0;
 
-	for (int i = 1; i <= N; i++)
-		q.push(i);
+	while (!q.empty()) {
+		int f = q.front(); q.pop();
 
-	for (caseT = 1;; caseT++)  {
-		if (q.size() == 1) {
-			cout << q.front();
+		if (f == G) {
+			cout << v[f];
 			exit(0);
 		}
-
-		shout = (caseT * caseT * caseT - 1);
-		shout %= q.size();
-
-		while (shout--) {
-			q.push(q.front());
-			q.pop();
+		int nU = f + U;
+		int nD = f - D;
+		if (nU <= F && v[nU] == -1) {
+			v[nU] = v[f] + 1;
+			q.push(nU);
 		}
-
-		q.pop();
+		if (1 <= nD && v[nD] == -1) {
+			v[nD] = v[f] + 1;
+			q.push(nD);
+		}
 	}
+
+	cout << "use the stairs";
 }
