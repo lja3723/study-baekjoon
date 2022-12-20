@@ -144,6 +144,7 @@
   <ItemGroup>
     <Text Include="13460.txt" />
     <Text Include="impl)getLCSList.txt" />
+    <Text Include="tmp.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

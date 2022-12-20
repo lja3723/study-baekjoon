@@ -1,4 +1,4 @@
-ï»¿//problem No. 24508, ë‚˜ë„ë¦¬íŒ¡
+//problem No. 24508, ³ªµµ¸®ÆÎ
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -29,6 +29,12 @@ int main() {
 			b[l] -= need;
 		}
 	}
+
+	/*
+	for (i = 0; i < N; i++)
+		cout << b[i] << " ";
+	cout << "\n";
+	*/
 
 	if (T >= 0 && (b[f] == K || b[f] == 0))
 		cout << "YES";
