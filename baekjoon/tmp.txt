@@ -1,61 +1,65 @@
-4 4
-####
-#JF#
-#..#
-#..#
-ans: 3
+//problem No. 14226, 이모티콘
+#include <iostream>
+#include <queue>
+using namespace std;
+#define MAX 2001
 
+struct State { int dp, clip, t; }; //출력or복사된 문자수 & 시간
 
-3 3
-###
-#J.
-#.F
-ans: IMPOSSIBLE
+int S;
+int tDp[MAX], tCl[MAX]; //N개의 문자가 화면에 출력된 or 복사된 시간
+queue<State> q;
 
+void nowStat() {
+	for (int i = 1; i <= S; i++)
+		cout << i << ": " << tDp[i] << " " << tCl[i] << "\n";
+	cout << "-------------------------\n\n";
+}
 
-4 6
-######
-......
-#.J###
-#F####
-ans: 5
+int main() {
+	cin >> S;
 
+	fill(tDp, tDp + MAX, -1);
+	fill(tCl, tCl + MAX, -1);
+	q.push({ 1, 0, 0 });
+	tDp[1] = 0;
+	nowStat();
 
-5 4
-####
-#...
-#.##
-#.J#
-####
-ans: 6
+	while (!q.empty()) {
+		State s = q.front(); q.pop();
+		int nxtT = s.t + 1;
 
+		//S개의 문자 완성
+		if (tDp[s.dp] != -1 && s.dp == S) 
+			break;
 
-7 7
-#######
-#J#####
-#.....#
-#.#.#.#
-#.#.#.#
-F.#.#.#
-##F.#.#
-ans: 10
+		if (tDp[s.dp] == -1)
+			continue;
 
+		//1. 클립보드 저장
+		if (tCl[s.dp] == -1) {
+			q.push({ s.dp, s.dp, nxtT });
+			tCl[s.dp] = nxtT;
+			nowStat();
+		}
 
-7 7
-#######
-#J###F#
-#.....#
-#.#.#.#
-#.#.#.#
-F.#.#.#
-##F.#.#
-ans: IMPOSSIBLE
+		//2. 붙여넣기
+		if (s.clip != 0) {
+			int nxtDp = s.dp + s.clip;
+			if (nxtDp < MAX && tDp[nxtDp] == -1) {
+				q.push({ nxtDp, s.clip, nxtT });
+				tDp[nxtDp] = nxtT;
+				nowStat();
+			}
+		} 
 
-
-3 3
-JF.
-F..
-...
-ans: 1
-
-
+		//3. 문자 1개 삭제
+		if (s.dp - 1 > 1 && tDp[s.dp - 1] == -1) {
+			q.push({ s.dp - 1, s.clip, nxtT });
+			tDp[s.dp - 1] = nxtT;
+			nowStat();
+		}
+	}
+	nowStat();
+	cout << tDp[S];
+}
