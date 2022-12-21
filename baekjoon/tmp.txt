@@ -1,43 +1,61 @@
-//problem No. 24508, ³ªµµ¸®ÆÎ
-#include <iostream>
-#include <vector>
-#include <algorithm>
-using namespace std;
+4 4
+####
+#JF#
+#..#
+#..#
+ans: 3
 
-int N, K, T, i;
-vector<int> b;
 
-int main() {
-	cin >> N >> K >> T;
+3 3
+###
+#J.
+#.F
+ans: IMPOSSIBLE
 
-	b.resize(N);
-	for (i = 0; i < N; i++)
-		cin >> b[i];
-	sort(begin(b), end(b), greater<int>());
 
-	int f = 0, l = N - 1;
-	while (f < l && 0 <= T) {
-		int need = K - b[f];
-		if (b[l] <= need) {
-			b[f] += b[l];
-			T -= b[l];
-			b[l--] = 0;
-		}
-		else {
-			b[f++] += need;
-			T -= need;
-			b[l] -= need;
-		}
-	}
+4 6
+######
+......
+#.J###
+#F####
+ans: 5
 
-	/*
-	for (i = 0; i < N; i++)
-		cout << b[i] << " ";
-	cout << "\n";
-	*/
 
-	if (T >= 0 && (b[f] == K || b[f] == 0))
-		cout << "YES";
-	else
-		cout << "NO";
-}
+5 4
+####
+#...
+#.##
+#.J#
+####
+ans: 6
+
+
+7 7
+#######
+#J#####
+#.....#
+#.#.#.#
+#.#.#.#
+F.#.#.#
+##F.#.#
+ans: 10
+
+
+7 7
+#######
+#J###F#
+#.....#
+#.#.#.#
+#.#.#.#
+F.#.#.#
+##F.#.#
+ans: IMPOSSIBLE
+
+
+3 3
+JF.
+F..
+...
+ans: 1
+
+
