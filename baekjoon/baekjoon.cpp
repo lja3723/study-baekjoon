@@ -3,26 +3,28 @@
 #include <cmath>
 using namespace std;
 
-long long sq[50001];
-long long ret[50001];
+double sqt[50001];
+int ret[50001];
 int n;
 
 int main() {
 	cin >> n;
+
+	for (int i = 1; i <= n; i++)
+		sqt[i] = sqrt(i);
 	
 	ret[1] = 1;
 	for (int i = 2; i <= n; i++) {
-		double s = sqrt(i);
-		if (s - (int)s < 10e-10) {
+		int isqt = (int)sqt[i];
+		if (sqt[i] - isqt < 10e-10) {
 			ret[i] = 1;
 		}
 		else {
-			ret[i] = ret[i - (int)s * (int)s] + 1;
+			ret[i] = 2e9;
+			for (int j = 1; i - j * j > 0; j++)
+				ret[i] = min(ret[i], ret[i - j * j] + 1);
 		}
 	}
 
-	//for (int i = 1; i <= n; i++) {
-	//	cout << i << ": " << ret[i] << endl;
-	//}
 	cout << ret[n];
 }
