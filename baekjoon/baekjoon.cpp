@@ -1,30 +1,81 @@
-﻿//problem No. 17626, Four Squares
+﻿//problem No. 14500, 테트로미노
 #include <iostream>
-#include <cmath>
 using namespace std;
 
-double sqt[50001];
-int ret[50001];
-int n;
+int m[520][520], N, M, fs = 10;
+
+int dx[19][4] = {
+	{ 0, 1, 2, 3 },
+	{ 0, 0, 0, 0 },
+
+	{ 0, 1, 0, 1 },
+
+	{ 0, 0, 0, 1 },
+	{ 2, 1, 0, 0 },
+	{ 1, 1, 1, 0 },
+	{ 0, 1, 2, 2 },
+
+	{ 1, 1, 1, 0 },
+	{ 2, 1, 0, 0 },
+	{ 0, 0, 0, 1 },
+	{ 0, 1, 2, 2 },
+
+	{ 0, 0, 1, 1 },
+	{ 2, 1, 1, 0 },
+
+	{ 1, 1, 0, 0 },
+	{ 2, 1, 1, 0 },
+
+	{ 0, 1, 2, 1 },
+	{ 1, 1, 1, 0 },
+	{ 0, 1, 2 ,1 },
+	{ 0, 0, 0, 1 },
+};
+int dy[19][4] = {
+	{ 0, 0, 0, 0 },
+	{ 0, 1, 2, 3 },
+
+	{ 0, 0, 1, 1 },
+
+	{ 0, 1, 2, 2 },
+	{ 0, 0, 0, 1 },
+	{ 2, 1, 0, 0 },
+	{ 1, 1, 1, 0 },
+
+	{ 0, 1, 2, 2 },
+	{ 1, 1, 1, 0 },
+	{ 2, 1, 0, 0 },
+	{ 0, 0, 0, 1 },
+
+	{ 0, 1, 1, 2 },
+	{ 0, 0, 1, 1 },
+
+	{ 0, 1, 1, 2 },
+	{ 1, 1, 0, 0 },
+
+	{ 0, 0, 0, 1 },
+	{ 0, 1, 2, 1 },
+	{ 1, 1, 1, 0 },
+	{ 0, 1, 2, 1 },
+};
 
 int main() {
-	cin >> n;
+	cin >> N >> M;
+	for (int i = fs; i < N + fs; i++)
+		for (int j = fs; j < M + fs; j++)
+			cin >> m[i][j];
 
-	for (int i = 1; i <= n; i++)
-		sqt[i] = sqrt(i);
-	
-	ret[1] = 1;
-	for (int i = 2; i <= n; i++) {
-		int isqt = (int)sqt[i];
-		if (sqt[i] - isqt < 10e-10) {
-			ret[i] = 1;
+	int ret = 0;
+	for (int i = fs; i < N + fs; i++)
+		for (int j = fs; j < M + fs; j++) {
+			for (int s = 0; s < 19; s++) {
+				int sum = 0;
+				for (int si = 0; si < 4; si++) {
+					sum += m[i + dx[s][si]][j + dy[s][si]];
+				}
+				ret = max(ret, sum);
+			}
 		}
-		else {
-			ret[i] = 2e9;
-			for (int j = 1; i - j * j > 0; j++)
-				ret[i] = min(ret[i], ret[i - j * j] + 1);
-		}
-	}
 
-	cout << ret[n];
+	cout << ret;
 }
