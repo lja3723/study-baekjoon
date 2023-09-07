@@ -1,28 +1,28 @@
-﻿//problem No. 9375, 패션왕 신해빈
+﻿//problem No. 17626, Four Squares
 #include <iostream>
-#include <map>
+#include <cmath>
 using namespace std;
 
-int T, n;
+long long sq[50001];
+long long ret[50001];
+int n;
 
 int main() {
-	cin >> T;
-	while (T--) {
-		cin >> n;
-		map<string, int> m;
-		for (int i = 0; i < n; i++) {
-			string tmp; cin >> tmp >> tmp;
-			if (m.find(tmp) != m.end())
-				m[tmp]++;
-			else
-				m[tmp] = 1;
+	cin >> n;
+	
+	ret[1] = 1;
+	for (int i = 2; i <= n; i++) {
+		double s = sqrt(i);
+		if (s - (int)s < 10e-10) {
+			ret[i] = 1;
 		}
-
-		long long ret = 1;
-
-		for (auto it = m.begin(); it != m.end(); it++)
-			ret *= it->second + 1;
-		cout << ret - 1 << "\n";
+		else {
+			ret[i] = ret[i - (int)s * (int)s] + 1;
+		}
 	}
 
+	//for (int i = 1; i <= n; i++) {
+	//	cout << i << ": " << ret[i] << endl;
+	//}
+	cout << ret[n];
 }
