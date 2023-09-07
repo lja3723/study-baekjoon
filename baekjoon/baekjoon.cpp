@@ -1,54 +1,46 @@
-﻿//problem No. 9019, DSLR
+﻿//problem No. 20529, 가장 가까운 세 사람의 심리적 거리
 #include <iostream>
 #include <vector>
-#include <queue>
 using namespace std;
 
-int T, A, B;
-string cmd = "DSLR";
+int T, N;
 
-int next(int c, int n) {
-	switch (c) {
-	case 0: //cmd D
-		return n * 2 % 10000;
-	case 1: //cmd S
-		return --n == -1 ? 9999 : n;
-	case 2: //cmd L
-		return n / 1000 + n % 1000 * 10;
-	case 3: //cmd R
-		return n / 10 + n % 10 * 1000;
+int f(string& s1, string& s2) {
+	int ret = 0;
+	for (int i = 0; i < 4; i++)
+		if (s1[i] != s2[i]) ret++;
+	return ret;
+}
+
+int sel[3];
+int ans;
+
+void bt(vector<string>& v, int start, int depth) {
+	if (depth >= 3) {
+		ans = min(ans, f(v[sel[0]], v[sel[1]]) + f(v[sel[0]], v[sel[2]]) + f(v[sel[1]], v[sel[2]]));
+		return;
+	}
+
+	for (int i = start; i < N - (2 - depth); i++) {
+		sel[depth] = i;
+		bt(v, i + 1, depth + 1);
 	}
 }
 
 int main() {
 	cin >> T;
-	for (int i = 0; i < 4; i++) {
-		cout << next(i, T) << " ";
-	}
-	/*
 	while (T--) {
-		cin >> A >> B;
-
-		vector<int> visit(10000, 0);
-		queue<pair<int, string>> q;
-
-		q.push({ A, "" });
-		visit[A] = 1;
-		while (!q.empty()) {
-			auto cur = q.front();
-			q.pop();
-			if (cur.first == B) {
-				cout << cur.second << "\n";
-				break;
-			}
-
-			for (int c = 0; c < 4; c++) {
-				if (visit[next(c, cur.first)])
-					continue;
-				q.push({ next(c, cur.first), cur.second + cmd[c]});
-				visit[next(c, cur.first)] = 1;
-			}
+		cin >> N;
+		vector<string> v(N);
+		for (int i = 0; i < N; i++) {
+			cin >> v[i];
 		}
+		if (N > 32) {
+			cout << "0\n";
+			continue;
+		}
+		ans = 2e9;
+		bt(v, 0, 0);
+		cout << ans << "\n";
 	}
-	*/
 }
