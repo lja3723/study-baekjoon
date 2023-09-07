@@ -1,57 +1,28 @@
-﻿//problem No. 14226, 이모티콘
+﻿//problem No. 9375, 패션왕 신해빈
 #include <iostream>
-#include <queue>
+#include <map>
 using namespace std;
-#define MAX 1001
 
-//t초에 act를 했고, dp개가 출력되며, 클립보드에 cp개 있음
-struct Stat { int dp, cp; };
-
-int S, tDp[MAX];
-bool visit[MAX][MAX];
-queue<Stat> q;
+int T, n;
 
 int main() {
-	fill(tDp, tDp + MAX, -1);
-
-	cin >> S;
-	q.push({ 1, 0 });
-	visit[1][0] = 1;
-
-	int t = 0;
-	while (tDp[S] == -1 && !q.empty()) {
-		int sz = q.size();
-		while (sz--) {
-			Stat s = q.front(); q.pop();
-
-			if (tDp[s.dp] == -1) {
-				tDp[s.dp] = t;
-				if (s.dp == S)
-					break;
-			}
-
-			//1.
-			if (!visit[s.dp][s.dp]) {
-				q.push({ s.dp, s.dp });
-				visit[s.dp][s.dp] = 1;
-			}
-
-			//2.
-			int nxtDp = s.dp + s.cp;
-			if (nxtDp < MAX && !visit[nxtDp][s.cp]) {
-				q.push({ nxtDp, s.cp });
-				visit[nxtDp][s.cp] = 1;
-			}
-
-			//3.
-			nxtDp = s.dp - 1;
-			if (nxtDp > 0 && !visit[nxtDp][s.cp]) {
-				q.push({ nxtDp, s.cp });
-				visit[nxtDp][s.cp] = 1;
-			}
+	cin >> T;
+	while (T--) {
+		cin >> n;
+		map<string, int> m;
+		for (int i = 0; i < n; i++) {
+			string tmp; cin >> tmp >> tmp;
+			if (m.find(tmp) != m.end())
+				m[tmp]++;
+			else
+				m[tmp] = 1;
 		}
-		t++;
+
+		long long ret = 1;
+
+		for (auto it = m.begin(); it != m.end(); it++)
+			ret *= it->second + 1;
+		cout << ret - 1 << "\n";
 	}
 
-	cout << tDp[S];
 }
