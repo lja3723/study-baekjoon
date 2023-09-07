@@ -1,81 +1,54 @@
-﻿//problem No. 14500, 테트로미노
+﻿//problem No. 9019, DSLR
 #include <iostream>
+#include <vector>
+#include <queue>
 using namespace std;
 
-int m[520][520], N, M, fs = 10;
+int T, A, B;
+string cmd = "DSLR";
 
-int dx[19][4] = {
-	{ 0, 1, 2, 3 },
-	{ 0, 0, 0, 0 },
-
-	{ 0, 1, 0, 1 },
-
-	{ 0, 0, 0, 1 },
-	{ 2, 1, 0, 0 },
-	{ 1, 1, 1, 0 },
-	{ 0, 1, 2, 2 },
-
-	{ 1, 1, 1, 0 },
-	{ 2, 1, 0, 0 },
-	{ 0, 0, 0, 1 },
-	{ 0, 1, 2, 2 },
-
-	{ 0, 0, 1, 1 },
-	{ 2, 1, 1, 0 },
-
-	{ 1, 1, 0, 0 },
-	{ 2, 1, 1, 0 },
-
-	{ 0, 1, 2, 1 },
-	{ 1, 1, 1, 0 },
-	{ 0, 1, 2 ,1 },
-	{ 0, 0, 0, 1 },
-};
-int dy[19][4] = {
-	{ 0, 0, 0, 0 },
-	{ 0, 1, 2, 3 },
-
-	{ 0, 0, 1, 1 },
-
-	{ 0, 1, 2, 2 },
-	{ 0, 0, 0, 1 },
-	{ 2, 1, 0, 0 },
-	{ 1, 1, 1, 0 },
-
-	{ 0, 1, 2, 2 },
-	{ 1, 1, 1, 0 },
-	{ 2, 1, 0, 0 },
-	{ 0, 0, 0, 1 },
-
-	{ 0, 1, 1, 2 },
-	{ 0, 0, 1, 1 },
-
-	{ 0, 1, 1, 2 },
-	{ 1, 1, 0, 0 },
-
-	{ 0, 0, 0, 1 },
-	{ 0, 1, 2, 1 },
-	{ 1, 1, 1, 0 },
-	{ 0, 1, 2, 1 },
-};
+int next(int c, int n) {
+	switch (c) {
+	case 0: //cmd D
+		return n * 2 % 10000;
+	case 1: //cmd S
+		return --n == -1 ? 9999 : n;
+	case 2: //cmd L
+		return n / 1000 + n % 1000 * 10;
+	case 3: //cmd R
+		return n / 10 + n % 10 * 1000;
+	}
+}
 
 int main() {
-	cin >> N >> M;
-	for (int i = fs; i < N + fs; i++)
-		for (int j = fs; j < M + fs; j++)
-			cin >> m[i][j];
+	cin >> T;
+	for (int i = 0; i < 4; i++) {
+		cout << next(i, T) << " ";
+	}
+	/*
+	while (T--) {
+		cin >> A >> B;
 
-	int ret = 0;
-	for (int i = fs; i < N + fs; i++)
-		for (int j = fs; j < M + fs; j++) {
-			for (int s = 0; s < 19; s++) {
-				int sum = 0;
-				for (int si = 0; si < 4; si++) {
-					sum += m[i + dx[s][si]][j + dy[s][si]];
-				}
-				ret = max(ret, sum);
+		vector<int> visit(10000, 0);
+		queue<pair<int, string>> q;
+
+		q.push({ A, "" });
+		visit[A] = 1;
+		while (!q.empty()) {
+			auto cur = q.front();
+			q.pop();
+			if (cur.first == B) {
+				cout << cur.second << "\n";
+				break;
+			}
+
+			for (int c = 0; c < 4; c++) {
+				if (visit[next(c, cur.first)])
+					continue;
+				q.push({ next(c, cur.first), cur.second + cmd[c]});
+				visit[next(c, cur.first)] = 1;
 			}
 		}
-
-	cout << ret;
+	}
+	*/
 }
