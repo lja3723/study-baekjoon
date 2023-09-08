@@ -1,0 +1,51 @@
+//problem No. 1107, ¸®¸ðÄÁ
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int N, M, n, ans = 2e9;
+vector<int> omit(10), valid, sel(10);
+
+int abs(int n) { return n > 0 ? n : -n; }
+
+int getLen(int n) {
+	int r = 0;
+	while (n > 0) n /= 10, r++;
+	return r;
+}
+
+void dfs(int d) {
+	if (d == n + 1) {
+		int k = 0;
+		for (int i = 0; i < n; i++) {
+			k = 10 * k + sel[i];
+		}
+		ans = min(ans, getLen(k) + abs(N - k));
+		return;
+	}
+
+	for (int i = 0; i < valid.size(); i++) {
+		sel[d] = valid[i];
+		dfs(d + 1);
+	}
+}
+
+int main() {
+	cin >> N >> M;
+	n = getLen(N);
+	cout << n << endl;
+
+	for (int i = 0; i < M; i++) {
+		int k; cin >> k;
+		omit[k]++;
+	}
+
+	for (int i = 0; i < 10; ++i)
+		if (!omit[i]) valid.push_back(i);
+
+	ans = min({ ans, abs(N - 100) });
+
+	dfs(0);
+
+	cout << ans;
+}
